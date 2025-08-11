@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC -shared -Wl,-soname,libroutes.so -o /home/fyonietz/Repo/AUM/core/libroutes.so CMakeFiles/routes.dir/__/libs/Civet/civetweb.c.o CMakeFiles/routes.dir/register.cpp.o CMakeFiles/routes.dir/__/pages/handler.cpp.o 
