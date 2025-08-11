@@ -1,7 +1,7 @@
 #include "handler.hpp"
 Pnix Server;
 
-EXPORT int home(struct mg_connection *connection,void *callback){
+EXPORT int login(struct mg_connection *connection,void *callback){
     Server.home("public/layout.html",connection);
     return 200;
 }
@@ -16,7 +16,7 @@ EXPORT int static_file(struct mg_connection *connection, void *callback) {
     return 200;
 }
 
-EXPORT int home_redirect(struct mg_connection *connection, void *callback) {
+EXPORT int login_redirect(struct mg_connection *connection, void *callback) {
     mg_printf(connection,
         "HTTP/1.1 302 Found\r\n"
         "Location: /home\r\n"

@@ -1,19 +1,100 @@
+:root{
+    --main:#8c52ff;
+    --container-width:90%;
+    --shadow:10px 11px 0px -6px rgba(0,0,0,1);
+}
+
+
 body{
-    background-color: black;
     overflow-x: hidden;
     margin: 0;
     padding: 0;
     overflow-y: hidden;
+    font-family: 'Oswald';
+    background-color: #8c52ff;
 }
-
 .container{
     padding-top: 0;
     height: 100vh;
     width: 100vw;
-    background-color: blueviolet;
     display: flex;
     flex-direction: column;
+    -webkit-text-stroke: 0.5px black;
+    margin-top: -20%;
 }
 
+@media screen and (max-width:768px){
+    .container{
+    padding-top: 0;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    background-color: var(--main);
+    }
+
+    .container-dumb{
+        align-items: center;
+        border: 1px solid black;
+        width: var(--container-width);
+        align-self: center;
+        text-align: center;
+        margin-bottom: 4%;
+        margin-top: 4%;
+        color: var(--main);
+        box-shadow: var(--shadow);
+        background-color: white;
+    }
+
+   .login{ 
+    width: var(--container-width);
+    align-self: center;
+    align-items: center;
+    box-shadow: var(--shadow);
+    border: 1px solid black;
+    background-color: white;
+   }
+
+   .input-block{
+    border: 1px solid black;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    justify-content: center;
+    margin: 0 auto;
+    margin-top: 4%;
+    margin-bottom: 4%;
+    color: var(--main);
+    font-weight: bold;
+    font-size: larger;
+    box-shadow: var(--shadow);
+    height: fit-content;
+    background-color: white;
+   }
+   .input-block label{
+    margin-right: 1%;
+   }
+   .input-block input{
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0 auto;
+    display: block;
+    border: none;
+   }
+
+   .container-dumb button{
+    border: none;
+    background-color: transparent;
+    font-size: x-large;
+    font-family: 'Oswald';
+    font-weight: bold;
+    color: var(--main);
+   }
+
+
+}
 
 
