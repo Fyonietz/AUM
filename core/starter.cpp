@@ -59,9 +59,8 @@ void updateConfig() {
         "num_threads", Config::threads.c_str(),
         "enable_keep_alive", Config::keep_alive.c_str(),
         "enable_directory_listing", "no",
-        "index_files", "index.html,layout.html",
-        "error_log_file", "error.log",
-        nullptr
+        "index_files", "layout.html",
+       nullptr
     };
 
     // Print configuration for debugging
@@ -121,7 +120,7 @@ const char *Config::server_config[] = {
     "listening_ports",      nullptr,
     "num_threads",          nullptr,
     "enable_keep_alive",    nullptr,
-    "enable_directory_listing", "no",
-    "index_files",          "layout.html",
+    // "enable_directory_listing", "yes",
+    // "index_files",          "layout.html",
     nullptr
 };

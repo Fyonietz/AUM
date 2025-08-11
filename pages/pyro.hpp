@@ -172,17 +172,29 @@ std::string commentify_tags(const std::string& content, const std::vector<std::s
         return;
     }
 
+    // Determine content type based on file extension
+    std::string content_type = "text/html";
+    size_t dot_pos = path.find_last_of('.');
+    if (dot_pos != std::string::npos) {
+        std::string ext = path.substr(dot_pos);
+        if (ext == ".css") content_type = "text/css";
+        else if (ext == ".js") content_type = "text/javascript";
+        else if (ext == ".png") content_type = "image/png";
+        else if (ext == ".jpg" || ext == ".jpeg") content_type = "image/jpeg";
+        else if (ext == ".gif") content_type = "image/gif";
+    }
+
     // Read the entire file into a string
     std::ostringstream buffer;
     buffer << file.rdbuf();
     std::string content = buffer.str();
 
-    // Send the HTTP headers and the HTML content
+    // Send the HTTP headers with correct content type
     mg_printf(connection,
               "HTTP/1.1 200 OK\r\n"
-              "Content-Type: text/html\r\n"
+              "Content-Type: %s\r\n"
               "Content-Length: %zu\r\n\r\n%s",
-              content.length(), content.c_str());
+              content_type.c_str(), content.length(), content.c_str());
     }
     void home(std::string path, struct mg_connection *connection){
          std::fstream syntax("public/syntax.list");
@@ -222,9 +234,10 @@ std::string commentify_tags(const std::string& content, const std::vector<std::s
     std::string content = buffer.str();
     file.close();
 
+    // Process HTML templates
     content = commentify_tags(content, tag_list_vect);
 
-    // Send the HTTP response
+    // Send the HTTP response with HTML content type
     mg_printf(connection,
               "HTTP/1.1 200 OK\r\n"
               "Content-Type: text/html\r\n"
@@ -282,9 +295,10 @@ std::string commentify_tags(const std::string& content, const std::vector<std::s
   }
   
 
+    // Process HTML templates and tags
     content = commentify_tags(content, tag_list_vect);
 
-    // Send the HTTP response
+    // Send the HTTP response with HTML content type
     mg_printf(connection,
               "HTTP/1.1 200 OK\r\n"
               "Content-Type: text/html\r\n"

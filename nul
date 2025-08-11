@@ -1,0 +1,4 @@
+[ 10%] Building CXX object CMakeFiles/Phoenix.dir/pages/handler.cpp.o
+[ 20%] Linking CXX executable /home/fyonietz/Repo/AUM/Phoenix
+[ 60%] Built target Phoenix
+[100%] Built target routes
