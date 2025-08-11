@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/Phoenix.dir/main.cpp.o CMakeFiles/Phoenix.dir/core/engine.cpp.o CMakeFiles/Phoenix.dir/core/starter.cpp.o CMakeFiles/Phoenix.dir/libs/Civet/civetweb.c.o CMakeFiles/Phoenix.dir/pages/handler.cpp.o -o /home/fyonietz/Repo/AUM/Phoenix  -lpthread -ldl 
