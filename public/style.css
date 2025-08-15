@@ -1,5 +1,6 @@
 :root{
-    --main:#8c52ff;
+    --main:black;
+    --purple:#8c52ff;
     --container-width:90%;
     --shadow:10px 11px 0px -6px rgba(0,0,0,1);
 }
@@ -32,10 +33,10 @@ body{
     flex-direction: column;
     justify-content: center;
     align-content: center;
-    background-color: var(--main);
+    background-color: var(--purple);
     }
 
-    .container-dumb{
+    .container-dum{
         align-items: center;
         border: 1px solid black;
         width: 50%;
@@ -44,7 +45,6 @@ body{
         margin-bottom: 2%;
         margin-top: 2%;
         color: var(--main);
-        box-shadow: var(--shadow);
         background-color: white;
     }
 
@@ -52,7 +52,6 @@ body{
     width: 50%;
     align-self: center;
     align-items: center;
-    box-shadow: var(--shadow);
     border: 1px solid black;
     background-color: white;
    }
@@ -70,7 +69,6 @@ body{
     color: var(--main);
     font-weight: bold;
     font-size: larger;
-    box-shadow: var(--shadow);
     height: fit-content;
     background-color: white;
    }
@@ -85,7 +83,7 @@ body{
     border: none;
    }
 
-   .container-dumb button{
+   .container-dum button{
     border: none;
     background-color: transparent;
     font-size: x-large;
@@ -94,14 +92,14 @@ body{
     color: var(--main);
    }
 
-  .container-dumb-hover:hover{
+  .container-dum-hover:hover{
     transition: ease 0.2s;
     box-shadow: none;
     background-color: var(--main);
     color: white !important;
   }
 
-  .container-dumb-hover:hover button:hover{
+  .container-dum-hover:hover button:hover{
     color: white;
   }
 
@@ -114,10 +112,10 @@ body{
     flex-direction: column;
     justify-content: center;
     align-content: center;
-    background-color: var(--main);
+    background-color: var(--purple);
     }
 
-    .container-dumb{
+    .container-dum{
         align-items: center;
         border: 1px solid black;
         width: var(--container-width);
@@ -126,7 +124,6 @@ body{
         margin-bottom: 4%;
         margin-top: 4%;
         color: var(--main);
-        box-shadow: var(--shadow);
         background-color: white;
     }
 
@@ -134,7 +131,6 @@ body{
     width: var(--container-width);
     align-self: center;
     align-items: center;
-    box-shadow: var(--shadow);
     border: 1px solid black;
     background-color: white;
    }
@@ -152,7 +148,6 @@ body{
     color: var(--main);
     font-weight: bold;
     font-size: larger;
-    box-shadow: var(--shadow);
     height: fit-content;
     background-color: white;
    }
@@ -167,7 +162,7 @@ body{
     border: none;
    }
 
-   .container-dumb button{
+   .container-dum button{
     border: none;
     background-color: transparent;
     font-size: x-large;
@@ -176,16 +171,16 @@ body{
     color: var(--main);
    }
 
-  .container-dumb-hover:hover{
+  .container-dum-hover:hover{
     transition: ease 0.2s;
     box-shadow: none;
     background-color: var(--main);
     color: white !important;
   }
 
-  .container-dumb-hover:hover button:hover{
+  .container-dum-hover:hover button:hover{
     color: white;
   }
 }
 
-
+/* dashboard */

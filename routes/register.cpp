@@ -15,7 +15,10 @@ extern "C" EXPORT void update(struct mg_context *context) {
     // Register all routes herea
     Route.add(context,"/",login_redirect,0);
     Route.add(context,"/login",login,0);
+    Route.add(context,"/dashboard",dashboard_admin,0);
+    Route.add(context,"/auth",auth,0);
     // Handle static files (CSS, JS, images)
     Route.add(context,"/style.css",static_file,0);
+    Route.add(context,"/script.js",static_file,0);
     std::cout <<info << "Routes Safe" << std::flush <<std::endl;
 }

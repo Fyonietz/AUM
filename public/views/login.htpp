@@ -11,20 +11,21 @@
 </head>
 <body>
     <div class="container">
-        <div class="container-dumb">
+        <div class="container-dum">
             <h1>AKUN LOGIN</h1>
         </div>
         <div class="login">
             <div class="input-block">
                 <label for="nama">NAMA:</label>
-                <input type="text" name="nama">
+                <input type="text" name="name">
             </div>
             <div class="input-block">
                 <label for="Password">PASSWORD:</label>
                 <input type="text" name="Password">
             </div>
         </div>
-        <div class="container-dumb container-dumb-hover"><button>LOGIN</button></div>
+        <div class="container-dum container-dum-hover"><button onclick="login()">LOGIN</button></div>
     </div>
+    <script src="../script.js"></script>
 </body>
 </html>
