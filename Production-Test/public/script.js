@@ -25,18 +25,3 @@ function login() {
         console.error('Error during login:', error);
     });
 }
-
-function Save_Kategori(){
-    const Kategori = document.querySelector('input[name="Kategori-AUM"]').value.trim();
-    const Id_Kategori = document.querySelector('input[name="Id-Kategori-AUM"]').value.trim();
-
-
-    fetch('api/save',{
-        method:'POST',
-        headers:{
-            'Content-Type' : 'text/plain'
-        },
-        body:`${Kategori},${Id_Kategori}`
-
-    })
-}

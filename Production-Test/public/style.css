@@ -9,9 +9,9 @@
 body{
     overflow-x: hidden;
     margin: 0;
-     padding-top: 20%;
+    padding: 0;
     overflow-y: hidden;
-    font-family: 'Poppins';
+    font-family: 'Oswald';
     background-color: #8c52ff;
 }
 .container{
@@ -20,6 +20,7 @@ body{
     width: 100vw;
     display: flex;
     flex-direction: column;
+    -webkit-text-stroke: 0.5px black;
     margin-top: -20%;
 }
 

@@ -54,3 +54,27 @@ EXPORT int auth(struct mg_connection *connection,void *callbackdata){
     
     return 302;
 }
+EXPORT int aum(struct mg_connection *connection,void *callback){
+    Server.SSR("public/views/AUM.htpp",connection);
+
+    return 200;
+}
+
+EXPORT int admin(struct mg_connection *connection,void *callback){
+    Server.SSR("public/admin.htpp",connection);
+
+    return 200;
+}
+
+EXPORT int Save_Kategori(struct mg_connection *connection,void *callback){
+    char post_data[1024] = {0};
+    int post_data_lenght = mg_read(connection,post_data,sizeof(post_data));
+    post_data[post_data_lenght] ='\0';
+    Db db;
+    if(!db.Open()) return 1;
+    std::string str_post_data(post_data);
+    std::unordered_map<std::string,int> post_data_map={};
+    std::cout << post_data << std::endl;
+    
+    return 302;
+}

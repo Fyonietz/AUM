@@ -196,6 +196,7 @@ std::string commentify_tags(const std::string& content, const std::vector<std::s
               "Content-Length: %zu\r\n\r\n%s",
               content_type.c_str(), content.length(), content.c_str());
     }
+
     void home(std::string path, struct mg_connection *connection){
          std::fstream syntax("public/syntax.list");
     std::vector<std::string> tag_list_vect;
@@ -244,66 +245,98 @@ std::string commentify_tags(const std::string& content, const std::vector<std::s
               "Content-Length: %zu\r\n\r\n%s",
               content.length(), content.c_str());
     }
-     void SSR(std::string path, struct mg_connection *connection) {
-    std::fstream syntax("public/syntax.list");
-    std::vector<std::string> tag_list_vect;
-    std::string tag_line;
+    
+    void SSR(std::string path, struct mg_connection *connection) {
+        // 1. Load syntax tags
+        std::fstream syntax("public/syntax.list");
+        std::vector<std::string> tag_list_vect;
+        std::string tag_line;
 
-    if (syntax.is_open()) {
-        while (std::getline(syntax, tag_line)) {
-            tag_list_vect.push_back(tag_line);
+        if (syntax.is_open()) {
+            while (std::getline(syntax, tag_line)) {
+                tag_list_vect.push_back(tag_line);
+            }
+            syntax.close();
+        } else {
+            std::cerr << "File may not exist: syntax.list" << std::endl;
+            return;
         }
-    } else {
-        std::cerr << "File may not exist: syntax.list" << std::endl;
-        return;
-    }
 
-    // Make sure layout exists
-    std::ifstream file_layout("public/layout.html");
-    if (!file_layout) {
-        std::cerr << "> Phoenix[Info]: Error: Layout.html not found" << std::endl;
-        return;
-    }
+        // 2. Load layout template
+        std::ifstream file_layout("public/layout.html");
+        if (!file_layout) {
+            std::cerr << "> Phoenix[Info]: Error: Layout.html not found" << std::endl;
+            return;
+        }
 
-    // Load target file into string
-    std::ifstream file(path);
-    if (!file) {
-        const char *msg = "404 Not Found";
+        // Read layout into string
+        std::stringstream layout_buffer;
+        layout_buffer << file_layout.rdbuf();
+        std::string layout_content = layout_buffer.str();
+        file_layout.close();
+
+        // 3. Load target file
+        std::ifstream file(path);
+        if (!file) {
+            const char *msg = "404 Not Found";
+            mg_printf(connection,
+                     "HTTP/1.1 404 Not Found\r\n"
+                     "Content-Type: text/plain\r\n"
+                     "Content-Length: %zu\r\n\r\n%s",
+                     strlen(msg), msg);
+            return;
+        }
+
+        // Read target file into string
+        std::stringstream content_buffer;
+        content_buffer << file.rdbuf();
+        std::string content = content_buffer.str();
+        file.close();
+
+        // 4. Process each tag
+        for (const auto& tag : tag_list_vect) {
+            if (tag.empty()) continue;
+
+            // Find tag in target content
+            size_t tag_pos = content.find(tag);
+            while (tag_pos != std::string::npos) {
+                // Find the block in layout
+                size_t layout_start = layout_content.find(tag);
+                if (layout_start != std::string::npos) {
+                    // Find end of start tag line in layout
+                    size_t block_start = layout_content.find('\n', layout_start);
+                    if (block_start != std::string::npos) {
+                        block_start++; // Skip the newline
+
+                        // Find end tag in layout
+                        size_t block_end = layout_content.find("@end", block_start);
+                        if (block_end != std::string::npos) {
+                            // Extract the block content
+                            std::string block = layout_content.substr(block_start, block_end - block_start);
+
+                            // Find end of tag line in target content
+                            size_t replace_end = content.find('\n', tag_pos);
+                            if (replace_end == std::string::npos) {
+                                replace_end = content.length();
+                            }
+
+                            // Replace the tag with the block content
+                            content.replace(tag_pos, replace_end - tag_pos, block);
+                        }
+                    }
+                }
+                // Look for next occurrence of the tag
+                tag_pos = content.find(tag, tag_pos + 1);
+            }
+        }
+
+        // 5. Send the processed content
         mg_printf(connection,
-                  "HTTP/1.1 404 Not Found\r\n"
-                  "Content-Type: text/plain\r\n"
-                  "Content-Length: %zu\r\n\r\n%s",
-                  strlen(msg), msg);
-        return;
+                 "HTTP/1.1 200 OK\r\n"
+                 "Content-Type: text/html\r\n"
+                 "Content-Length: %zu\r\n\r\n%s",
+                 content.length(), content.c_str());
     }
-
-    std::ostringstream buffer;
-    buffer << file.rdbuf();
-    std::string content = buffer.str();
-    file.close();
-
-    // // Perform block insertion and commentify tags
-    for (const auto& for_tag : tag_list_vect) {
-        copy_block("public/layout.html", for_tag); 
-        insert_block(path, for_tag);
-
-        // Re-load updated content after insertion
-        std::ifstream updated_file(path);
-        std::stringstream updated_buffer;
-        updated_buffer << updated_file.rdbuf();
-        content = updated_buffer.str();
-  }
-  
-
-    // Process HTML templates and tags
-    content = commentify_tags(content, tag_list_vect);
-
-    // Send the HTTP response with HTML content type
-    mg_printf(connection,
-              "HTTP/1.1 200 OK\r\n"
-              "Content-Type: text/html\r\n"
-              "Content-Length: %zu\r\n\r\n%s",
-              content.length(), content.c_str());
-}
-
 };
+
+

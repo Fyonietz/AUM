@@ -19,16 +19,21 @@ target_include_directories(${CMAKE_PROJECT_NAME}
     PRIVATE pages
     PRIVATE routes
     PUBLIC libs
+    PUBLIC /usr/include  # OpenSSL headers here
 )
 
 # Add platform-specific definitions
-if (WIN32)
-    add_definitions(-DNO_SSL)
-else()
-    add_definitions(-DNO_SSL -DLINUX)
-endif()
+add_definitions(-DNO_SSL)
 
-# Link pthread for Linux
+
+# Link OpenSSL libraries manually on Debian/Linux
+target_link_libraries(${CMAKE_PROJECT_NAME}
+    /usr/lib/x86_64-linux-gnu/libssl.so
+    /usr/lib/x86_64-linux-gnu/libcrypto.so
+    sqlite3
+)
+
+# Link pthread and dl on Linux/Unix
 if (UNIX)
     target_link_libraries(${CMAKE_PROJECT_NAME} pthread dl)
 endif()

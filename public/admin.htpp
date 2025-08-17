@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    @head
+    <title>Admin DB</title>
+</head>
+<body>
+    <div>
+        <input type="text" name="Kategori-AUM" id="Kategori" placeholder="Kategori">
+        <input type="number" name="Id-Kategori-AUM" id="Id-Kategori" placeholder="Id-Sub Kategori">
+        <button onclick="Save_Kategori()">Submit</button>
+    </div>
+    <script src="/script.js"></script>
+</body>
+</html>
