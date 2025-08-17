@@ -1,4 +1,8 @@
 build/
 .vscode/
+Production-Test/
 nul
-*.`db
+*.db
+Caddyfile
+docker-compose.yml
+Dockerfile

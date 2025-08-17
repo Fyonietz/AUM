@@ -16,3 +16,4 @@ EXPORT int auth(struct mg_connection *connection,void *callbackdata);
 EXPORT int aum(struct mg_connection *connection,void *callback);
 EXPORT int admin(struct mg_connection *connection,void *callback);
 EXPORT int Save_Kategori(struct mg_connection *connection,void *callback);
+EXPORT int Read_Kategori(struct mg_connection *connection,void *callback);

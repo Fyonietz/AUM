@@ -20,10 +20,11 @@ extern "C" EXPORT void update(struct mg_context *context) {
     Route.add(context,"/aum",aum,0);
     Route.add(context,"/admin",admin,0);
     Route.add(context,"/api/save",Save_Kategori,0);
-
+    Route.add(context,"/api/read",Read_Kategori,0);
     // Handle static files (CSS, JS, images)
     Route.add(context,"/style.css",static_file,0);
     Route.add(context,"/bk.css",static_file,0);
     Route.add(context,"/script.js",static_file,0);
+    Route.add(context,"/style-admin.css",static_file,0);
     std::cout <<info << "Routes Safe" << std::flush <<std::endl;
 }

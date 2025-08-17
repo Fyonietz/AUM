@@ -69,12 +69,75 @@ EXPORT int admin(struct mg_connection *connection,void *callback){
 EXPORT int Save_Kategori(struct mg_connection *connection,void *callback){
     char post_data[1024] = {0};
     int post_data_lenght = mg_read(connection,post_data,sizeof(post_data));
-    post_data[post_data_lenght] ='\0';
+    post_data[post_data_lenght] ='\0'; 
+    std::string str_post_data(post_data);
+    size_t pos = str_post_data.find(',');
+    if(pos == std::string::npos){
+       return 400;
+    }
+    std::string nama_kategory = str_post_data.substr(0,pos);
+    std::string id_kategory = str_post_data.substr(pos+1);
+
+    std::cout << nama_kategory << std::endl;
+    std::cout << std::stoi(id_kategory) << std::endl;
+    std::string insert = "INSERT INTO bidang_masalah (id,nama_bidang_masalah) "
+                        "VALUES (" + id_kategory + ", '" + nama_kategory + "');";
     Db db;
     if(!db.Open()) return 1;
-    std::string str_post_data(post_data);
-    std::unordered_map<std::string,int> post_data_map={};
-    std::cout << post_data << std::endl;
-    
+    if(!db.Query(insert)){
+        db.Close();
+        return 500;
+    }
+    db.Close();
+    mg_printf(connection,
+        "HTTP/1.1 200 OK\r\n"
+        "Content-Type:text/plain\r\n"
+        "Content-Lenght: %zu\r\n"
+    );
     return 302;
+};
+
+
+EXPORT int Read_Kategori(struct mg_connection *connection, void *callback) {
+    Db db;
+    if (!db.Open()) {
+        mg_printf(connection,
+            "HTTP/1.1 500 Internal Server Error\r\n"
+            "Content-Type: text/plain\r\n"
+            "Content-Length: 21\r\n\r\n"
+            "Failed to open DB.\n");
+        return 500;
+    }
+
+    JsonCallbackData jsonData;
+    std::string select_sql = "SELECT id, nama_bidang_masalah FROM bidang_masalah;";
+    char* errMsg = nullptr;
+
+    int rc = sqlite3_exec(db.db, select_sql.c_str(), JsonCallback, &jsonData, &errMsg);
+    db.Close();
+
+    if (rc != SQLITE_OK) {
+        std::cerr << "Select error: " << errMsg << std::endl;
+        sqlite3_free(errMsg);
+        mg_printf(connection,
+            "HTTP/1.1 500 Internal Server Error\r\n"
+            "Content-Type: text/plain\r\n"
+            "Content-Length: 23\r\n\r\n"
+            "Failed to query table.\n");
+        return 500;
+    }
+
+    std::string response = jsonData.jsonArray.dump();
+
+    mg_printf(connection,
+        "HTTP/1.1 200 OK\r\n"
+        "Content-Type: application/json\r\n"
+        "Content-Length: %zu\r\n"
+        "\r\n"
+        "%s",
+        response.length(),
+        response.c_str()
+    );
+
+    return 200;
 }

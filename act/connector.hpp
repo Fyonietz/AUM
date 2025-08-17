@@ -4,11 +4,32 @@
 #include <sqlite3.h>
 #include <iostream>
 #include <string>
+#include <json.hpp>
 #ifdef _WIN32
     #define EXPORT __declspec(dllexport)
 #else   
     #define EXPORT __attribute__((visibility("default")))
 #endif
+
+using json = nlohmann::json;
+
+extern "C" struct EXPORT JsonCallbackData {
+    json jsonArray = json::array();
+};
+
+inline int JsonCallback(void* data, int argc, char** argv, char** azColName) {
+    JsonCallbackData* jsonData = static_cast<JsonCallbackData*>(data);
+
+    json row;
+    for (int i = 0; i < argc; i++) {
+        std::string colName = azColName[i];
+        std::string value = argv[i] ? argv[i] : "";
+        row[colName] = value;
+    }
+
+    jsonData->jsonArray.push_back(row);
+    return 0;
+}
 extern "C" struct EXPORT Db {
     std::string info_sys = " > Phoenix[Info]: ";
 
