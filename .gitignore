@@ -2,7 +2,8 @@ build/
 .vscode/
 Production-Test/
 nul
-*.db
+data.db
+bidang_masalah.csv
 Caddyfile
 docker-compose.yml
 Dockerfile

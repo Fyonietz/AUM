@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    @head
+    <title>CRUD User</title>
+    <link rel="stylesheet" href="/admin/style-admin.css">
+</head>
+<body>
+    <div class="register-user">
+        <input type="text" name="nama" id="nama" placeholder="Nama">
+        <input type="text" name="password" id="password" placeholder="Password">
+        <label for="Kelas">Kelas</label>
+        <select name="Kelas" id="Kelas">
+            <option value="X TJKT 1">X TJKT 1</option>
+            <option value="X TJKT 2">X TJKT 2</option>
+            <option value="X TJKT 3">X TJKT 3</option>
+            <option value="X TJKT 4">X TJKT 4</option>
+            <option value="X DKV 1">X DKV 1</option>
+            <option value="X DKV 2">X DKV 2</option>
+            <option value="X RPL 1">X RPL 1</option>
+            <option value="X RPL 2">X RPL 2</option>
+            <option value="X BC">X BC</option>
+        </select>
+        <div class="btn-place">
+            <button id="save_user" onclick="save_user()">Save</button>
+            <button>Cancel</button>
+        </div>
+    </div>
+    <script src="/admin/script-admin.js"></script>
+</body>
+</html>

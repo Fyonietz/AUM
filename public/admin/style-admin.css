@@ -1,0 +1,29 @@
+   table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 8px;
+      border: 1px solid #ccc;
+    }
+
+@media screen and (max-width:768px){
+  .register-user{
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    margin-top: 2%;
+    width: 80%;
+  }
+  .btn-place{
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    justify-content: space-around;
+  }
+  
+  .Kategori h1{
+    text-align: center;
+  }
+}

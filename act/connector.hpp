@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <json.hpp>
+#include "auth.hpp"
 #ifdef _WIN32
     #define EXPORT __declspec(dllexport)
 #else   
@@ -74,6 +75,27 @@ extern "C" struct EXPORT Db {
 
         return true;
     }
+    // Execute a SELECT and return the first column of the first row
+    std::string GetSingleResult(const std::string& sql) {
+    std::string result;
+    
+    auto callback = [](void* data, int argc, char** argv, char** azColName) -> int {
+        if (argc > 0 && argv[0]) {
+            *static_cast<std::string*>(data) = argv[0];
+        }
+        return 0; // Stop after first row
+    };
+
+    char* errorMessage = nullptr;
+    int rc = sqlite3_exec(db, sql.c_str(), callback, &result, &errorMessage);
+    if (rc != SQLITE_OK) {
+        std::cerr << info_sys << "SQL error in GetSingleResult: " << errorMessage << std::endl;
+        sqlite3_free(errorMessage);
+        return "";
+    }
+
+    return result;
+}
 
     // Close the database
     void Close() {
@@ -92,6 +114,25 @@ extern "C" struct EXPORT Db {
         std::cout << std::endl;
         return 0;
     }
+    bool AuthenticateAsAdmin(Db& db, const std::string& username, const std::string& password) {
+    if (username != "Admin") {
+        return false;
+    }
+
+    std::string query = "SELECT * FROM user WHERE Role = 'Admin' AND password = '" + password + "';";
+    
+    JsonCallbackData result;
+    char* errorMessage = nullptr;
+
+    int exit = sqlite3_exec(db.db, query.c_str(), JsonCallback, &result, &errorMessage);
+    if (exit != SQLITE_OK) {
+        std::cerr << "SQL error: " << errorMessage << std::endl;
+        sqlite3_free(errorMessage);
+        return false;
+    }
+
+    return !result.jsonArray.empty(); // If any row matched, login success
+}
 };
 
 #endif // !DATABASE

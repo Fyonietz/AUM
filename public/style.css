@@ -1,6 +1,9 @@
 :root{
     --main:black;
     --purple:#8c52ff;
+    --orange:#FF9800;
+    --green:#4caf50;
+    --blue:#1E90FF;
     --container-width:90%;
     --shadow:10px 11px 0px -6px rgba(0,0,0,1);
 }
@@ -9,8 +12,6 @@
 body{
     overflow-x: hidden;
     margin: 0;
-     padding-top: 20%;
-    overflow-y: hidden;
     font-family: 'Poppins';
     background-color: #8c52ff;
 }
@@ -101,7 +102,14 @@ body{
   .container-dum-hover:hover button:hover{
     color: white;
   }
-
+  #login-error{
+    justify-self: center;
+    color: red;
+    display: flex;
+    font-family: 'Poppins';
+    font-size: medium;
+    font-weight: bold;
+  }
 @media screen and (max-width:768px){
     .container{
     padding-top: 0;

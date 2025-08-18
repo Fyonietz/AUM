@@ -1,15 +1,12 @@
 function login() {
-    // Get values from input fields
     const nama = document.querySelector('input[name="name"]').value;
     const password = document.querySelector('input[name="Password"]').value;
 
-    // Create data object to send
     const data = {
         nama: nama,
         password: password
     };
 
-    // Send POST request to /auth
     fetch('/auth', {
         method: 'POST',
         headers: {
@@ -17,9 +14,20 @@ function login() {
         },
         body: JSON.stringify(data)
     })
-    .then(response => response.json())
+    .then(response => response.json()
+        .then(json => ({
+            ok: response.ok,
+            status: response.status,
+            body: json
+        }))
+    )
     .then(result => {
-        console.log('Server response:', result);
+        if (result.ok && result.body.success) {
+            window.location.href = result.body.redirect || "/admin";
+        } else {
+            // Show error alert
+            document.getElementById("login-error").innerText = result.body.message || "Login failed.";
+        }
     })
     .catch(error => {
         console.error('Error during login:', error);
@@ -40,3 +48,29 @@ function Save_Kategori(){
 
     })
 }
+
+ fetch('/api/read')
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        const tbody = document.getElementById('data-table-body');
+        tbody.innerHTML = ''; // Clear table body
+
+        data.forEach(item => {
+          const row = document.createElement('tr');
+
+          const idCell = document.createElement('td');
+          idCell.textContent = item.id;
+
+          const nameCell = document.createElement('td');
+          nameCell.textContent = item.nama_soal_masalah;
+
+          row.appendChild(idCell);
+          row.appendChild(nameCell);
+          tbody.appendChild(row);
+        });
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });

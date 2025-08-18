@@ -23,6 +23,7 @@
                 <label for="Password">PASSWORD:</label>
                 <input type="text" name="Password">
             </div>
+         <label id="login-error"></label>
         </div>
         <div class="container-dum container-dum-hover"><button onclick="login()">LOGIN</button></div>
     </div>
