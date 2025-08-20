@@ -7,7 +7,7 @@
 </head>
 <body>
 
-  <h1>Survey: Select Your Problems</h1>
+  <h1 id="welcome">Survey: Select Your Problems</h1>
 
   <form id="surveyForm" class="checkbox-wrapper-47">
     <div id="checkboxContainer">Loading questions...</div>

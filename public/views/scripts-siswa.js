@@ -1,3 +1,21 @@
+let currentUser = null; // global to keep user info
+
+async function loadUserInfo() {
+  try {
+    const res = await fetch('/whoiam');
+    if (!res.ok) throw new Error('Unauthorized');
+    currentUser = await res.json();
+
+    const welcomeEl = document.getElementById('welcome');
+    welcomeEl.textContent = `Welcome, ${currentUser.nama} (${currentUser.kelas})`;
+  } catch (err) {
+    console.error('User fetch error:', err);
+    document.getElementById('welcome').textContent = 'Welcome, Guest';
+    currentUser = { nama: 'Guest', kelas: '' }; // fallback user object
+  }
+  return currentUser;
+}
+
 async function loadData() {
   try {
     const response = await fetch('/api/read');
@@ -16,7 +34,6 @@ async function loadData() {
     const container = document.getElementById('checkboxContainer');
     container.innerHTML = '';
 
-    // Render checkboxes (without showing categories)
     for (const [, problems] of Object.entries(grouped)) {
       problems.forEach(problem => {
         const wrapper = document.createElement('div');
@@ -32,7 +49,6 @@ async function loadData() {
         label.htmlFor = checkbox.id;
         label.textContent = ` ${problem.id}. ${problem.nama_soal_masalah}`;
 
-        // Add stretch effect on check
         checkbox.addEventListener('change', function () {
           wrapper.classList.toggle('checked', this.checked);
         });
@@ -43,8 +59,7 @@ async function loadData() {
       });
     }
 
-    // Save full data globally
-    window.surveyData = data;
+    window.surveyData = data; // store full data globally
 
   } catch (error) {
     document.getElementById('checkboxContainer').textContent = 'Failed to load questions.';
@@ -55,12 +70,27 @@ async function loadData() {
 document.getElementById('surveyForm').addEventListener('submit', function (event) {
   event.preventDefault();
 
-  const checkedBoxes = document.querySelectorAll('input[name="problems"]:checked');
-  const selectedProblems = Array.from(checkedBoxes).map(cb =>
-    window.surveyData.find(item => item.id === cb.value)
-  );
+  if (!currentUser) {
+    alert('User info not loaded yet!');
+    return;
+  }
 
-  document.getElementById('result').textContent = JSON.stringify(selectedProblems, null, 2);
+  const checkedBoxes = document.querySelectorAll('input[name="problems"]:checked');
+  const combinedArray = Array.from(checkedBoxes).map(cb => {
+    const problem = window.surveyData.find(item => item.id === cb.value);
+    return {
+      nama: currentUser.nama,
+      kelas: currentUser.kelas,
+      id: problem.id,
+      nama_soal_masalah: problem.nama_soal_masalah
+    };
+  });
+
+  document.getElementById('result').textContent = JSON.stringify(combinedArray, null, 2);
 });
 
-window.onload = loadData;
+window.onload = async () => {
+  await loadUserInfo(); // wait for user info
+  await loadData();     // then load problems
+};
+

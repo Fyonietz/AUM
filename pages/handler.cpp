@@ -155,7 +155,6 @@ EXPORT int auth(struct mg_connection *connection, void *callbackdata) {
             "{\"success\": false, \"message\": \"Missing credentials\"}");
         return 400;
     }
-
     std::string hashed_password = hash(password);
     Db db;
     if (!db.Open()) {
@@ -166,13 +165,20 @@ EXPORT int auth(struct mg_connection *connection, void *callbackdata) {
             "{\"success\": false, \"message\": \"Database error\"}");
         return 500;
     }
-
+    bool isAdmin = db.AuthenticateAsAdmin(db,nama,hashed_password);
     std::string sql;
     JsonCallbackData jsonData;
 
     // Admin login
-    if (nama == "Admin") {
-        sql = "SELECT nama, 'Admin' AS kelas FROM user WHERE role='Admin' AND password='" + hashed_password + "';";
+    if (isAdmin) {
+        mg_printf(connection,
+        "HTTP/1.1 200 OK\r\n"
+        "Content-Type: application/json\r\n"
+        "Set-Cookie: auth_token=%s; Path=/; HttpOnly\r\n"
+        "Connection: close\r\n\r\n"
+        "{\"success\": true, \"redirect\": \"/admin\"}",
+        hashed_password.c_str());
+        return 200;
     } else {
         // Siswa login
         sql = "SELECT nama, kelas FROM siswa WHERE nama='" + nama + "' AND token='" + hashed_password + "';";
@@ -365,6 +371,67 @@ EXPORT int auth_siswa(struct mg_connection *connection, void *callbackdata) {
         "Connection: close\r\n\r\n"
         "{\"success\": true, \"redirect\": \"/aum\"}",
         hashed_password.c_str());
+
+    return 200;
+}
+EXPORT int me(struct mg_connection *connection, void *callback) {
+    const char* cookie_header = mg_get_header(connection, "Cookie");
+    if (!cookie_header) {
+        mg_printf(connection,
+            "HTTP/1.1 401 Unauthorized\r\n"
+            "Content-Type: application/json\r\n\r\n"
+            "{\"error\": \"Missing auth token\"}");
+        return 401;
+    }
+
+    std::string cookies(cookie_header);
+    std::string tokenKey = "auth_token=";
+    size_t tokenPos = cookies.find(tokenKey);
+    if (tokenPos == std::string::npos) {
+        mg_printf(connection,
+            "HTTP/1.1 401 Unauthorized\r\n"
+            "Content-Type: application/json\r\n\r\n"
+            "{\"error\": \"Token not found\"}");
+        return 401;
+    }
+
+    size_t start = tokenPos + tokenKey.length();
+    size_t end = cookies.find(";", start);
+    std::string token = cookies.substr(start, (end == std::string::npos) ? std::string::npos : end - start);
+
+    Db db;
+    if (!db.Open()) {
+        mg_printf(connection,
+            "HTTP/1.1 500 Internal Server Error\r\n"
+            "Content-Type: application/json\r\n\r\n"
+            "{\"error\": \"Database error\"}");
+        return 500;
+    }
+
+    JsonCallbackData jsonData;
+    std::string safe_token = db.Escape(token);
+    std::string sql = "SELECT nama, kelas FROM siswa WHERE token = '" + safe_token + "';";
+
+    char* errMsg = nullptr;
+    int rc = sqlite3_exec(db.db, sql.c_str(), JsonCallback, &jsonData, &errMsg);
+    db.Close();
+
+    if (rc != SQLITE_OK || jsonData.jsonArray.empty()) {
+        mg_printf(connection,
+            "HTTP/1.1 401 Unauthorized\r\n"
+            "Content-Type: application/json\r\n\r\n"
+            "{\"error\": \"Invalid or expired token\"}");
+        return 401;
+    }
+
+    std::string response = jsonData.jsonArray[0].dump();
+    mg_printf(connection,
+        "HTTP/1.1 200 OK\r\n"
+        "Content-Type: application/json\r\n"
+        "Content-Length: %zu\r\n\r\n"
+        "%s",
+        response.size(),
+        response.c_str());
 
     return 200;
 }
