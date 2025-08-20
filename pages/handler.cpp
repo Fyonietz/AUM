@@ -604,7 +604,7 @@ EXPORT int Read_Kategori(struct mg_connection *connection, void *callback) {
     }
 
     JsonCallbackData jsonData;
-    std::string select_sql = "SELECT id,nama_soal_masalah FROM soal_masalah;";
+    std::string select_sql = "SELECT * FROM soal_masalah;";
     char* errMsg = nullptr;
 
     int rc = sqlite3_exec(db.db, select_sql.c_str(), JsonCallback, &jsonData, &errMsg);

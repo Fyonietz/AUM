@@ -82,7 +82,7 @@ document.getElementById('surveyForm').addEventListener('submit', function (event
       nama: currentUser.nama,
       kelas: currentUser.kelas,
       id: problem.id,
-      nama_soal_masalah: problem.nama_soal_masalah
+      nama_bidang_masalah: problem.nama_bidang_masalah
     };
   });
 
