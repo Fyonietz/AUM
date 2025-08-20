@@ -3,27 +3,13 @@
 <head>
     @head
     <title>Admin DB</title>
-    <link rel="stylesheet" href="/style-admin.css">
+    <link rel="stylesheet" href="/admin/style-admin.css">
 </head>
-<body style="background-color: white;">
-    <div class="Kategori">
-        <h1>Kategori</h1>
-        <input type="text" name="Kategori-AUM" id="Kategori" placeholder="Kategori">
-        <input type="number" name="Id-Kategori-AUM" id="Id-Kategori" placeholder="Id-Sub Kategori">
-        <button onclick="Save_Kategori()">Submit</button>
+<body>
+    <div class="nav">
+      <a href="/admin/user">CRUD User</a>
+      <a href="/admin/kategori">CRUD Kategori</a>
     </div>
-    <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nama Bidang Masalah</th>
-      </tr>
-    </thead>
-    <tbody id="data-table-body">
-    </tbody>
-  </table>
-  <iframe src="api/read" frameborder="0"></iframe>
-
     <script src="/script.js"></script>
 </body>
 </html>

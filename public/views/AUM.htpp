@@ -1,21 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+@head
   <title>Survey with Categories</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    h3 { margin-top: 20px; color: #2c3e50; }
-    label { display: block; margin: 6px 0; cursor: pointer; }
-    button { margin-top: 20px; padding: 10px 20px; font-size: 16px; }
-    pre { background: #f0f0f0; padding: 15px; border-radius: 5px; margin-top: 20px; }
-  </style>
+  <link rel="stylesheet" href="/views/siswa.css" />
 </head>
 <body>
 
   <h1>Survey: Select Your Problems</h1>
 
-  <form id="surveyForm">
+  <form id="surveyForm" class="checkbox-wrapper-47">
     <div id="checkboxContainer">Loading questions...</div>
     <button type="submit">Submit</button>
   </form>
@@ -23,66 +17,7 @@
   <h2>Selected Problems JSON Output</h2>
   <pre id="result"></pre>
 
-  <script>
-    async function loadData() {
-      try {
-        const response = await fetch('/api/read');
-        if (!response.ok) throw new Error('Network response was not ok');
-        const data = await response.json();
-
-        // Group data by category
-        const grouped = data.reduce((acc, item) => {
-          if (!acc[item.nama_bidang_masalah]) {
-            acc[item.nama_bidang_masalah] = [];
-          }
-          acc[item.nama_bidang_masalah].push(item);
-          return acc;
-        }, {});
-
-        const container = document.getElementById('checkboxContainer');
-        container.innerHTML = ''; // clear loading text
-
-        // Render categories and checkboxes
-        for (const [category, problems] of Object.entries(grouped)) {
-          const catHeading = document.createElement('h3');
-          catHeading.textContent = category;
-          container.appendChild(catHeading);
-
-          problems.forEach(problem => {
-            const label = document.createElement('label');
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.name = 'problems';
-            checkbox.value = problem.id;
-
-            label.appendChild(checkbox);
-            label.appendChild(document.createTextNode(' ' + problem.nama_soal_masalah));
-            container.appendChild(label);
-          });
-        }
-
-        // Save data globally for submit handler
-        window.surveyData = data;
-
-      } catch (error) {
-        document.getElementById('checkboxContainer').textContent = 'Failed to load questions.';
-        console.error('Fetch error:', error);
-      }
-    }
-
-    document.getElementById('surveyForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-
-      const checkedBoxes = document.querySelectorAll('input[name="problems"]:checked');
-      const selectedProblems = Array.from(checkedBoxes).map(cb => {
-        return window.surveyData.find(item => item.id === cb.value);
-      });
-
-      document.getElementById('result').textContent = JSON.stringify(selectedProblems, null, 2);
-    });
-
-    window.onload = loadData;
-  </script>
+  <script src="/views/scripts-siswa.js"></script>
 
 </body>
 </html>

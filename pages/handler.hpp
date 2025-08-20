@@ -16,6 +16,9 @@ EXPORT int locked_static_file(struct mg_connection *connection, void *callback);
 EXPORT int admin_crud_user(struct mg_connection *connection, void *callback);
 EXPORT int dashboard_admin(struct mg_connection *connection,void *callback);
 EXPORT int auth(struct mg_connection *connection,void *callbackdata);
+EXPORT int auth_siswa(struct mg_connection *connection, void *callbackdata); 
+EXPORT int logout(struct mg_connection *connection,void *callbackdata);
+EXPORT int login(struct mg_connection *connection,void *callbackdata);
 EXPORT int aum(struct mg_connection *connection,void *callback);
 EXPORT int admin(struct mg_connection *connection,void *callback);
 //API ENDPOINT DATABASED

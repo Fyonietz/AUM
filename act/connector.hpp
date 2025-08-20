@@ -133,6 +133,15 @@ extern "C" struct EXPORT Db {
 
     return !result.jsonArray.empty(); // If any row matched, login success
 }
+ std::string Escape(const std::string& input) {
+    std::string escaped;
+    for (char c : input) {
+        if (c == '\'') escaped += "''";  // Escape single quote
+        else escaped += c;
+    }
+    return escaped;
+}
+
 };
 
 #endif // !DATABASE

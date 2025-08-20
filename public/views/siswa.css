@@ -1,0 +1,58 @@
+h3 {
+  margin-top: 20px;
+  color: #2c3e50;
+}
+body{
+  background-color: white !important;
+}
+label {
+  display: block;
+  margin: 6px 0;
+  cursor: pointer;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+pre {
+  background: #f0f0f0;
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+/* Checkbox container */
+#checkboxContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Individual checkbox block */
+.checkbox-item {
+  position: relative;
+  padding: 12px 16px;
+  border: 2px solid #9098A9;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  transition: 0.25s all ease;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* Highlight when checked */
+.checkbox-item.checked {
+  background: #b7e6c9;
+  border-color: #2cbc63;
+  color: #0f5229;
+}
+
+/* Hide checkbox default appearance, use native appearance with accent-color */
+.checkbox-item input[type="checkbox"] {
+  margin-top: 4px;
+  accent-color: #2cbc63;
+  display: none;
+}

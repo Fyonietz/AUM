@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Kategori</title>
+</head>
+<body>
+    <div class="Kategori">
+        <h1>Kategori</h1>
+        <input type="text" name="Kategori-AUM" id="Kategori" placeholder="Kategori">
+        <input type="number" name="Id-Kategori-AUM" id="Id-Kategori" placeholder="Id-Sub Kategori">
+        <button onclick="Save_Kategori()">Submit</button>
+    </div>
+</body>
+</html>
