@@ -688,3 +688,71 @@ EXPORT int Save_User(struct mg_connection *connection, void *callback) {
 
     return 200;
 }
+EXPORT int submit(struct mg_connection *connection, void *callback) {
+    char post_data[1024] = {0};
+    int post_data_length = mg_read(connection, post_data, sizeof(post_data) - 1);
+    post_data[post_data_length] = '\0'; 
+    std::string body(post_data);
+
+    // Print raw data for debugging
+    std::cout << "Received POST data: " << body << std::endl;
+
+    json parsed;
+    try {
+        parsed = json::parse(body);
+    } catch (...) {
+        mg_printf(connection,
+            "HTTP/1.1 400 Bad Request\r\n"
+            "Content-Type: application/json\r\n"
+            "Connection: close\r\n\r\n"
+            "{\"success\": false, \"message\": \"Invalid JSON\"}");
+        return 400;
+    }
+
+    // The input is an array, so we'll iterate through it
+    if (!parsed.is_array()) {
+        mg_printf(connection,
+            "HTTP/1.1 400 Bad Request\r\n"
+            "Content-Type: application/json\r\n"
+            "Connection: close\r\n\r\n"
+            "{\"success\": false, \"message\": \"Expected an array\"}");
+        return 400;
+    }
+
+    // Iterate through each element of the array
+    for (const auto& item : parsed) {
+        // Extract relevant data
+        std::string nama = item.value("nama", "");
+        std::string kelas = item.value("kelas", "");
+        std::string id = item.value("id", "");
+        std::string nama_bidang_masalah = item.value("nama_bidang_masalah", "");
+        
+        // Optional: Print each item's data for debugging
+        std::cout << "Processing item:" << std::endl;
+        std::cout << "Nama: " << nama << std::endl;
+        std::cout << "Kelas: " << kelas << std::endl;
+        std::cout << "ID: " << id << std::endl;
+        std::cout << "Bidang Masalah: " << nama_bidang_masalah << std::endl;
+
+        // You can process the data here, e.g., save it to the database, etc.
+        // For example, you might want to insert into a table based on this data.
+        // Example (pseudo-code):
+        // std::string query = "INSERT INTO some_table (nama, kelas, id, bidang_masalah) VALUES (?, ?, ?, ?);";
+        // db.ExecuteQuery(query, nama, kelas, id, nama_bidang_masalah);
+    }
+
+    // Create a success response
+    std::string response_body = R"({"success": true, "message": "Data processed successfully"})";
+
+    mg_printf(connection,
+        "HTTP/1.1 200 OK\r\n"
+        "Content-Type: application/json\r\n"
+        "Content-Length: %zu\r\n"
+        "Connection: close\r\n\r\n"
+        "%s",
+        response_body.length(),
+        response_body.c_str()
+    );
+
+    return 200;
+}

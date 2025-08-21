@@ -21,6 +21,7 @@ EXPORT int auth_siswa(struct mg_connection *connection, void *callbackdata);
 EXPORT int logout(struct mg_connection *connection,void *callbackdata);
 EXPORT int login(struct mg_connection *connection,void *callbackdata);
 EXPORT int aum(struct mg_connection *connection,void *callback);
+EXPORT int submit(struct mg_connection *connection,void *callback);
 EXPORT int admin(struct mg_connection *connection,void *callback);
 //API ENDPOINT DATABASED
 //KATEGORI AUM

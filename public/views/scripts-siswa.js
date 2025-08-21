@@ -34,6 +34,8 @@ async function loadData() {
     const container = document.getElementById('checkboxContainer');
     container.innerHTML = '';
 
+    let index = 1; // Initialize the continuous index
+
     for (const [, problems] of Object.entries(grouped)) {
       problems.forEach(problem => {
         const wrapper = document.createElement('div');
@@ -47,7 +49,8 @@ async function loadData() {
 
         const label = document.createElement('label');
         label.htmlFor = checkbox.id;
-        label.textContent = ` ${problem.id}. ${problem.nama_soal_masalah}`;
+        // Display the continuous index instead of the problem ID
+        label.textContent = ` ${index++}. ${problem.nama_soal_masalah}`;
 
         checkbox.addEventListener('change', function () {
           wrapper.classList.toggle('checked', this.checked);
@@ -66,6 +69,7 @@ async function loadData() {
     console.error('Fetch error:', error);
   }
 }
+
 
 document.getElementById('surveyForm').addEventListener('submit', function (event) {
   event.preventDefault();
@@ -86,8 +90,36 @@ document.getElementById('surveyForm').addEventListener('submit', function (event
     };
   });
 
+  // Show the combined array in the result element for debugging
   document.getElementById('result').textContent = JSON.stringify(combinedArray, null, 2);
+
+  // Send the combinedArray via POST request
+  fetch('/aum/submit', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(combinedArray)
+  })
+  .then(response => {
+    // Check if the response is okay
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    // Parse the JSON response
+    return response.json();
+  })
+  .then(json => {
+    // Handle the JSON response here
+    console.log('Response JSON:', json);
+    console.log('Status:', json.status); // Example: handle status if available
+    console.log('Body:', json.body); // Example: handle body if available
+  })
+  .catch(error => {
+    console.error('Error submitting survey data:', error);
+  });
 });
+
 
 window.onload = async () => {
   await loadUserInfo(); // wait for user info
