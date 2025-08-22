@@ -693,7 +693,7 @@ EXPORT int submit(struct mg_connection *connection, void *callback) {
     int post_data_length = mg_read(connection, post_data, sizeof(post_data) - 1);
     post_data[post_data_length] = '\0'; 
     std::string body(post_data);
-
+    Db db;
     // Print raw data for debugging
     std::cout << "Received POST data: " << body << std::endl;
 
@@ -737,8 +737,9 @@ EXPORT int submit(struct mg_connection *connection, void *callback) {
         // You can process the data here, e.g., save it to the database, etc.
         // For example, you might want to insert into a table based on this data.
         // Example (pseudo-code):
-        // std::string query = "INSERT INTO some_table (nama, kelas, id, bidang_masalah) VALUES (?, ?, ?, ?);";
-        // db.ExecuteQuery(query, nama, kelas, id, nama_bidang_masalah);
+        std::string query = "INSERT INTO hasil (nama, kelas, soal_masalah_id, soal_masalah_kategori) VALUES (?, ?, ?, ?);";
+        db.Query(query);
+        db.Close();
     }
 
     // Create a success response
