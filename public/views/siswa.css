@@ -45,9 +45,9 @@ pre {
 
 /* Highlight when checked */
 .checkbox-item.checked {
-  background: #b7e6c9;
-  border-color: #2cbc63;
-  color: #0f5229;
+  background: #ddb7e6;
+  border-color: var(--purple);
+  color: #230f52;
 }
 
 /* Hide checkbox default appearance, use native appearance with accent-color */

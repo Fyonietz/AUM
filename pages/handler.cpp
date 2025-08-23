@@ -721,24 +721,19 @@ EXPORT int submit(struct mg_connection *connection, void *callback) {
 
     // Iterate through each element of the array
     for (const auto& item : parsed) {
+        db.Open();
         // Extract relevant data
         std::string nama = item.value("nama", "");
         std::string kelas = item.value("kelas", "");
         std::string id = item.value("id", "");
         std::string nama_bidang_masalah = item.value("nama_bidang_masalah", "");
         
-        // Optional: Print each item's data for debugging
-        std::cout << "Processing item:" << std::endl;
-        std::cout << "Nama: " << nama << std::endl;
-        std::cout << "Kelas: " << kelas << std::endl;
-        std::cout << "ID: " << id << std::endl;
-        std::cout << "Bidang Masalah: " << nama_bidang_masalah << std::endl;
 
         // You can process the data here, e.g., save it to the database, etc.
         // For example, you might want to insert into a table based on this data.
         // Example (pseudo-code):
-        std::string query = "INSERT INTO hasil (nama, kelas, soal_masalah_id, soal_masalah_kategori) VALUES (?, ?, ?, ?);";
-        db.Query(query);
+        std::string query = "INSERT INTO hasil (nama, kelas, soal_masalah_id, soal_masalah_kategori) VALUES ('"+nama+"','"+kelas+"','"+id+"','"+nama_bidang_masalah+"')";
+        db.QueryWithResults(query);
         db.Close();
     }
 
