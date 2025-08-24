@@ -145,7 +145,14 @@ EXPORT int aum(struct mg_connection *connection, void *callback) {
             "<html><body><h1>Unauthorized - No cookie</h1></body></html>");
         return 401;
     }
-
+    if(open_bk==0){
+         mg_printf(connection,
+            "HTTP/1.1 401 Unauthorized\r\n"
+            "Content-Type: text/html\r\n"
+            "Connection: close\r\n\r\n"
+            "<html><body><h1>Unauthorized</h1></body></html>");
+        return 401;
+    }
     std::string cookies(cookie_header);
     std::string tokenKey = "auth_token=";
     size_t tokenPos = cookies.find(tokenKey);

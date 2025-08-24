@@ -1,13 +1,21 @@
-:root{
-    --main:black;
-    --purple:#8c52ff;
-    --orange:#FF9800;
-    --green:#4caf50;
-    --blue:#1E90FF;
-    --container-width:90%;
-    --shadow:10px 11px 0px -6px rgba(0,0,0,1);
+:root {
+    --main: black;
+    --purple: #8c52ff;
+    --orange: #FF9800;
+    --green: #4caf50;
+    --blue: #1E90FF;
+    --container-width: 90%;
+    --shadow: 10px 11px 0px -6px rgba(0,0,0,1);
+    --white: #ffffff;
+    --text-color: var(--main);
+    --spacing: 1rem;
+    --border-radius: 6px;
+    --font: 'Poppins', sans-serif;
 }
 
+a{
+  text-decoration: none;
+}
 
 body{
     overflow-x: hidden;

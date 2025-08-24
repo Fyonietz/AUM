@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hasil</title>
+</head>
+<body>
+
+<h2>Daftar Akun</h2>
+<input type="text" id="searchInput" placeholder="Cari nama, kelas, atau password..." oninput="filterUserList()" />
+
+<div id="userListContainer">Loading...</div>
+
+<script>
+let allUsers = [];
+let currentSort = { column: '', direction: 'asc' };
+
+async function tampilkanDaftarUser() {
+  const container = document.getElementById("userListContainer");
+
+  try {
+    const response = await fetch("/api/user");
+    const users = await response.json();
+    allUsers = users;
+    renderTable(users);
+  } catch (error) {
+    console.error("Gagal mengambil data user:", error);
+    container.innerHTML = "<p>Terjadi kesalahan saat mengambil daftar akun.</p>";
+  }
+}
+
+function renderTable(users) {
+  const container = document.getElementById("userListContainer");
+
+  if (users.length === 0) {
+    container.innerHTML = "<p>Tidak ada akun ditemukan.</p>";
+    return;
+  }
+
+  let html = `<table border="1" cellpadding="8" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th onclick="sortTable('nama')">Nama ⬍</th>
+                    <th onclick="sortTable('kelas')">Kelas ⬍</th>
+                    <th onclick="sortTable('password')">Password ⬍</th>
+                  </tr>
+                </thead>
+                <tbody>`;
+
+  users.forEach((user, index) => {
+    html += `<tr>
+               <td>${index + 1}</td>
+               <td>${user.nama.trim()}</td>
+               <td>${user.kelas}</td>
+               <td>${user.password || '-'}</td>
+             </tr>`;
+  });
+
+  html += `</tbody></table>`;
+  container.innerHTML = html;
+}
+
+function filterUserList() {
+  const query = document.getElementById("searchInput").value.trim().toLowerCase();
+  const filtered = allUsers.filter(user =>
+    user.nama.toLowerCase().includes(query) ||
+    user.kelas.toLowerCase().includes(query) ||
+    (user.password && user.password.toLowerCase().includes(query))
+  );
+  renderTable(filtered);
+}
+
+function sortTable(column) {
+  if (currentSort.column === column) {
+    currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+  } else {
+    currentSort.column = column;
+    currentSort.direction = 'asc';
+  }
+
+  const sorted = [...allUsers].sort((a, b) => {
+    const valA = (a[column] || '').toLowerCase();
+    const valB = (b[column] || '').toLowerCase();
+
+    if (valA < valB) return currentSort.direction === 'asc' ? -1 : 1;
+    if (valA > valB) return currentSort.direction === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  renderTable(sorted);
+}
+
+window.addEventListener("DOMContentLoaded", tampilkanDaftarUser);
+</script>
+
+</body>
+</html>

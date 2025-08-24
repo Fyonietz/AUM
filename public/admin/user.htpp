@@ -10,6 +10,7 @@
     <a href="/logout">Log Out</a>
     <a href="/admin">Dashboard</a>
   </div>
+  
   <div class="register-user">
   <h1 id="toggleRegister">Register User</h1>
 
