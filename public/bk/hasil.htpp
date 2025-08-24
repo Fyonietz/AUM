@@ -57,10 +57,15 @@ async function cari() {
 
     const nama = hasilFiltered[0].nama;
     const kelas = hasilFiltered[0].kelas;
-
-    // Hitung jumlah item dan skor
     const jumlahItem = hasilFiltered.length;
     const skor = jumlahItem * 5;
+
+    // Count each kategori
+    const kategoriCount = {};
+    hasilFiltered.forEach(item => {
+      const kategori = item.soal_masalah_kategori;
+      kategoriCount[kategori] = (kategoriCount[kategori] || 0) + 1;
+    });
 
     // Build result HTML
     let html = `<h2>Nama: ${nama}</h2>`;
@@ -68,20 +73,35 @@ async function cari() {
     html += `<p><strong>Jumlah Item:</strong> ${jumlahItem}</p>`;
     html += `<p><strong>Skor:</strong> ${skor}</p>`;
 
+    html += `<h3>Detail Jawaban</h3>`;
     html += `<table border="1" cellpadding="8" cellspacing="0">
                <tr>
                  <th>Nomor</th>
                  <th>Kategori</th>
                </tr>`;
-
     hasilFiltered.forEach(item => {
       html += `<tr>
                  <td>${item.soal_masalah_id}</td>
                  <td>${item.soal_masalah_kategori}</td>
                </tr>`;
     });
+    html += `</table>`;
 
-    html += "</table>";
+    // Show count per kategori
+    html += `<h3>Rekapitulasi Kategori</h3>`;
+    html += `<table border="1" cellpadding="8" cellspacing="0">
+               <tr>
+                 <th>Kategori</th>
+                 <th>Jumlah Dipilih</th>
+               </tr>`;
+    for (const kategori in kategoriCount) {
+      html += `<tr>
+                 <td>${kategori}</td>
+                 <td>${kategoriCount[kategori]}</td>
+               </tr>`;
+    }
+    html += `</table>`;
+
     hasilContainer.innerHTML = html;
 
   } catch (error) {
@@ -89,6 +109,7 @@ async function cari() {
     hasilContainer.innerHTML = "<p>Terjadi kesalahan saat mengambil data.</p>";
   }
 }
+
 
 </script>
 
