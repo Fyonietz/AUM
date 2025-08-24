@@ -14,7 +14,6 @@ target_include_directories(routes
     PRIVATE ${CMAKE_SOURCE_DIR}/libs
     PRIVATE ${CMAKE_SOURCE_DIR}/pages
     PRIVATE ${CMAKE_SOURCE_DIR}/core
-    PRIVATE 
 )
 
 set_target_properties(routes PROPERTIES

@@ -114,6 +114,7 @@ extern "C" struct EXPORT Db {
         std::cout << std::endl;
         return 0;
     }
+
     bool AuthenticateAsAdmin(Db& db, const std::string& username, const std::string& password) {
     if (username != "Admin") {
         return false;
@@ -133,6 +134,26 @@ extern "C" struct EXPORT Db {
 
     return !result.jsonArray.empty(); // If any row matched, login success
 }
+    bool AuthenticateAsBK(Db& db, const std::string& username, const std::string& password) {
+    if (username != "BK_SMK4") {
+        return false;
+    }
+
+    std::string query = "SELECT * FROM user WHERE Role = 'BK_SMK4' AND password = '" + password + "';";
+    
+    JsonCallbackData result;
+    char* errorMessage = nullptr;
+
+    int exit = sqlite3_exec(db.db, query.c_str(), JsonCallback, &result, &errorMessage);
+    if (exit != SQLITE_OK) {
+        std::cerr << "SQL error: " << errorMessage << std::endl;
+        sqlite3_free(errorMessage);
+        return false;
+    }
+
+    return !result.jsonArray.empty();// If any row matched, login success
+}
+
  std::string Escape(const std::string& input) {
     std::string escaped;
     for (char c : input) {
