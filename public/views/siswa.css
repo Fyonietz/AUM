@@ -34,7 +34,7 @@ h1 {
 }
 
 #paginationControls button:hover {
-  background-color: #b57edc;
+  background-color: #734473;
   color: #fff;
   transform: scale(1.05);
 }
@@ -71,13 +71,13 @@ h1 {
 }
 
 .checkbox-item label:hover {
-  border-color: #000;
+  border-color: #734487;
 }
 
 .checkbox-item input:checked + label {
   background: #b57edc;
   color: #fff;
-  border: none;
+  border: #734487;
 }
 
 /* Submit button styling */
@@ -97,7 +97,7 @@ h1 {
 }
 
 .submit-btn:hover {
-  background: #b57edc;
+  background: #734487;
 }
 
 /* Smooth scrolling */

@@ -1,201 +1,136 @@
 :root {
-    --main: black;
-    --purple: #8c52ff;
-    --orange: #FF9800;
-    --green: #4caf50;
-    --blue: #1E90FF;
-    --container-width: 90%;
-    --shadow: 10px 11px 0px -6px rgba(0,0,0,1);
-    --white: #ffffff;
-    --text-color: var(--main);
-    --spacing: 1rem;
-    --border-radius: 6px;
-    --font: 'Poppins', sans-serif;
+  --purple: #b57edc;
+  --purple-dark: #734487;
+  --white: #ffffff;
+  --gray-light: #f4f4f4;
+  --gray: #9e9e9e;
+  --radius: 12px;
+  --shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  --font: 'Poppins', sans-serif;
 }
 
-a{
-  text-decoration: none;
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: linear-gradient(135deg, #b57edc, #b57edc);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #333;
 }
 
-body{
-    overflow-x: hidden;
-    margin: 0;
-    font-family: 'Poppins';
-    background-color: #8c52ff;
-}
-.container{
-    padding-top: 0;
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    margin-top: -20%;
+/* Container utama */
+.container {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
 }
 
-.container{
-    padding-top: 0;
-    margin-top: 2%;
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: center;
-    background-color: var(--purple);
-    }
-
-    .container-dum{
-        align-items: center;
-        border: 1px solid black;
-        width: 50%;
-        align-self: center;
-        text-align: center;
-        margin-bottom: 2%;
-        margin-top: 2%;
-        color: var(--main);
-        background-color: white;
-    }
-
-   .login{ 
-    width: 50%;
-    align-self: center;
-    align-items: center;
-    border: 1px solid black;
-    background-color: white;
-   }
-
-   .input-block{
-    border: 1px solid black;
-    width: 80%;
-    display: flex;
-    flex-direction: row;
-    align-self: center;
-    justify-content: center;
-    margin: 0 auto;
-    margin-top: 4%;
-    margin-bottom: 4%;
-    color: var(--main);
-    font-weight: bold;
-    font-size: larger;
-    height: fit-content;
-    background-color: white;
-   }
-   .input-block label{
-    margin-right: 1%;
-   }
-   .input-block input{
-    box-sizing: border-box;
-    width: 100%;
-    margin: 0 auto;
-    display: block;
-    border: none;
-   }
-
-   .container-dum button{
-    border: none;
-    background-color: transparent;
-    font-size: x-large;
-    font-family: 'Oswald';
-    font-weight: bold;
-    color: var(--main);
-   }
-
-  .container-dum-hover:hover{
-    transition: ease 0.2s;
-    box-shadow: none;
-    background-color: var(--main);
-    color: white !important;
-  }
-
-  .container-dum-hover:hover button:hover{
-    color: white;
-  }
-  #login-error{
-    justify-self: center;
-    color: red;
-    display: flex;
-    font-family: 'Poppins';
-    font-size: medium;
-    font-weight: bold;
-  }
-@media screen and (max-width:768px){
-    .container{
-    padding-top: 0;
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: center;
-    background-color: var(--purple);
-    }
-
-    .container-dum{
-        align-items: center;
-        border: 1px solid black;
-        width: var(--container-width);
-        align-self: center;
-        text-align: center;
-        margin-bottom: 4%;
-        margin-top: 4%;
-        color: var(--main);
-        background-color: white;
-    }
-
-   .login{ 
-    width: var(--container-width);
-    align-self: center;
-    align-items: center;
-    border: 1px solid black;
-    background-color: white;
-   }
-
-   .input-block{
-    border: 1px solid black;
-    width: 80%;
-    display: flex;
-    flex-direction: row;
-    align-self: center;
-    justify-content: center;
-    margin: 0 auto;
-    margin-top: 4%;
-    margin-bottom: 4%;
-    color: var(--main);
-    font-weight: bold;
-    font-size: larger;
-    height: fit-content;
-    background-color: white;
-   }
-   .input-block label{
-    margin-right: 1%;
-   }
-   .input-block input{
-    box-sizing: border-box;
-    width: 100%;
-    margin: 0 auto;
-    display: block;
-    border: none;
-   }
-
-   .container-dum button{
-    border: none;
-    background-color: transparent;
-    font-size: x-large;
-    font-family: 'Oswald';
-    font-weight: bold;
-    color: var(--main);
-   }
-
-  .container-dum-hover:hover{
-    transition: ease 0.2s;
-    box-shadow: none;
-    background-color: var(--main);
-    color: white !important;
-  }
-
-  .container-dum-hover:hover button:hover{
-    color: white;
-  }
+/* Judul */
+.container-dum {
+  background: var(--white);
+  border-radius: var(--radius);
+  text-align: center;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: var(--shadow);
 }
 
-/* dashboard */
+.container-dum h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--black);
+}
+
+/* Card login */
+.login {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  margin-bottom: 15px;
+}
+
+/* Input block */
+.input-block {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.input-block label {
+  font-size: 14px;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #333;
+}
+
+.input-block input {
+  padding: 10px;
+  border-radius: var(--radius);
+  border: 1px solid var(--gray);
+  outline: none;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.input-block input:focus {
+  border-color: #b57edc;
+  box-shadow: 0 0 4px var(--purple);
+}
+
+/* Error text */
+#login-error {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
+  color: red;
+  font-weight: bold;
+}
+
+/* Tombol */
+.container-dum-hover {
+  background: var(--white);
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.container-dum-hover button {
+  background: transparent;
+  border: none;
+  color: var(--black);
+  font-size: 16px;
+  font-weight: bold;
+  padding: 12px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.container-dum-hover:hover {
+  background: #b57edc;
+}
+
+/* Responsif */
+@media (max-width: 480px) {
+  .container {
+    padding: 10px;
+  }
+
+  .container-dum h1 {
+    font-size: 18px;
+  }
+
+  .input-block input {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .container-dum-hover button {
+    font-size: 14px;
+    padding: 10px;
+  }
+}

@@ -3,7 +3,7 @@ let currentPage = 1;
 const itemsPerPage = 30;
 let groupedData = {}; // for pagination
 let allData = [];     // for global access
-
+let selectedProblems = new Set();
 // Load user info from the API
 async function loadUserInfo() {
   try {
@@ -44,8 +44,6 @@ async function loadData() {
     document.getElementById('checkboxContainer').textContent = 'Failed to load questions.';
   }
 }
-
-// Render the questions for the given page
 function renderPage(page) {
   const container = document.getElementById('checkboxContainer');
   container.innerHTML = ''; // Clear existing content
@@ -68,13 +66,25 @@ function renderPage(page) {
     checkbox.value = problem.id;
     checkbox.id = `problem-${problem.id}`;
 
+    // Restore checkbox state from selectedProblems
+    if (selectedProblems.has(problem.id.toString())) {
+      checkbox.checked = true;
+      wrapper.classList.add('checked');
+    }
+
+    checkbox.addEventListener('change', function () {
+      if (this.checked) {
+        selectedProblems.add(this.value);
+        wrapper.classList.add('checked');
+      } else {
+        selectedProblems.delete(this.value);
+        wrapper.classList.remove('checked');
+      }
+    });
+
     const label = document.createElement('label');
     label.htmlFor = checkbox.id;
     label.textContent = `${index++}. ${problem.nama_soal_masalah}`;
-
-    checkbox.addEventListener('change', function () {
-      wrapper.classList.toggle('checked', this.checked);
-    });
 
     wrapper.appendChild(checkbox);
     wrapper.appendChild(label);
@@ -90,6 +100,7 @@ function renderPage(page) {
   // Scroll to the top when changing pages
   window.scrollTo(0, 0);
 }
+
 
 // Function to render pagination controls (page buttons)
 function renderPaginationControls() {
@@ -136,8 +147,6 @@ function renderPaginationControls() {
   };
   container.appendChild(nextBtn);
 }
-
-// Handle form submission
 document.getElementById('surveyForm').addEventListener('submit', function (event) {
   event.preventDefault();
 
@@ -146,9 +155,8 @@ document.getElementById('surveyForm').addEventListener('submit', function (event
     return;
   }
 
-  const checkedBoxes = document.querySelectorAll('input[name="problems"]:checked');
-  const combinedArray = Array.from(checkedBoxes).map(cb => {
-    const problem = allData.find(item => item.id === cb.value);
+  const combinedArray = Array.from(selectedProblems).map(id => {
+    const problem = allData.find(item => item.id.toString() === id);
     return {
       nama: currentUser.nama,
       kelas: currentUser.kelas,
@@ -156,9 +164,10 @@ document.getElementById('surveyForm').addEventListener('submit', function (event
       nama_bidang_masalah: problem.nama_bidang_masalah
     };
   });
+  console.log("Data to submit:", JSON.stringify(combinedArray, null, 2));
 
-  fetch('/aum/ubmit', {
-    method: 'PST',
+  fetch('/aum/submit', {
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },

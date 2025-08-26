@@ -1,17 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hasil</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hasil AUM</title>
+  <style>
+
+body {
+  font-family: 'Poppins', Arial, sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+  padding: 20px;
+}
+
+/* === Judul & Identitas === */
+.header-aum {
+  text-align: center;
+  margin-bottom: 20px;
+}
+h1{
+  text-align: center;
+}
+.header-aum h1 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #4a148c;
+}
+
+.header-aum .info {
+  font-size: 16px;
+  background: #f3e8ff;
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* === Search bar === */
+.register-user {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px auto;
+  width: 80vw;
+}
+
+.register-user input,
+.register-user select {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  
+}
+
+.register-user button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #8e44ad, #6c3483);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.register-user button:hover {
+  background: linear-gradient(135deg, #9b59b6, #7d3c98);
+}
+.btn-place{
+  display: flex;
+  justify-content: space-between;
+}
+.btn-place button{
+  width: 47%;
+}
+/* === Table Style === */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 12px 16px;
+  text-align: center;
+}
+
+th {
+  background-color: #8e44ad;
+  color: #ffff;
+  font-weight: 600;
+}
+
+/* Detail Jawaban Table (1 warna ungu gradasi) */
+.detail-table tr:nth-child(odd) td {
+  background-color: #ede7f6;
+}
+.detail-table tr:nth-child(even) td {
+  background-color: #d1c4e9;
+}
+.detail-table tr:hover td {
+  background-color: #b39ddb;
+  color: #fff;
+  transition: 0.2s;
+}
+
+/* Rekapitulasi Table (10 gradasi ungu) */
+.rekap-table tr:nth-child(1) td { background-color: #f3e8ff; }
+.rekap-table tr:nth-child(2) td { background-color: #e1caff; }
+.rekap-table tr:nth-child(3) td { background-color: #d0aaff; }
+.rekap-table tr:nth-child(4) td { background-color: #b88dfc; }
+.rekap-table tr:nth-child(5) td { background-color: #a46de0; }
+.rekap-table tr:nth-child(6) td { background-color: #8e4dd6; }
+.rekap-table tr:nth-child(7) td { background-color: #7533b9; }
+.rekap-table tr:nth-child(8) td { background-color: #5d239c; }
+.rekap-table tr:nth-child(9) td { background-color: #49187d; }
+.rekap-table tr:nth-child(10) td { background-color: #36105c; } 
+
+  </style>
 </head>
 <body>
-
-<div class="register-user">
   <h1 id="toggleRegister">Hasil AUM</h1>
+<div class="register-user">
 
-  <div id="registerForm" class="register-form">
-    <input type="text" name="nama" id="nama" placeholder="Nama">
+
+  <div id="registerForm" class="register-user">
+    <input type="text" name="nama" id="nama" placeholder="Nama" />
 
     <select name="Kelas" id="Kelas">
       <option value="X TJKT 1">X TJKT 1</option>
@@ -23,12 +144,10 @@
       <option value="X RPL 1">X RPL 1</option>
       <option value="X RPL 2">X RPL 2</option>
       <option value="X BC">X BC</option>
-   
     </select>
-
     <div class="btn-place">
       <button id="save_user" onclick="cari()">Cari</button>
-      <button onclick="window.location.href='/dashboard'" id="cancel">Cancel</button>
+      <button onclick="window.location.href='/dashboard'" id="cancel">Kembali</button>
     </div>
   </div>
 </div>
@@ -41,11 +160,19 @@ async function cari() {
   const kelasInput = document.getElementById("Kelas").value;
   const hasilContainer = document.getElementById("hasilContainer");
 
+  // Reset tampilan
+  hasilContainer.innerHTML = "<p>Loading...</p>";
+
+  if (!namaInput) {
+    hasilContainer.innerHTML = "<p>Silakan masukkan nama terlebih dahulu.</p>";
+    return;
+  }
+
   try {
     const response = await fetch("/api/hasil");
     const data = await response.json();
 
-    // Filter data based on input
+    // Filter berdasarkan nama dan kelas
     const hasilFiltered = data.filter(item =>
       item.nama.toLowerCase() === namaInput && item.kelas === kelasInput
     );
@@ -60,21 +187,21 @@ async function cari() {
     const jumlahItem = hasilFiltered.length;
     const skor = jumlahItem * 5;
 
-    // Count each kategori
+    // Hitung jumlah kategori
     const kategoriCount = {};
     hasilFiltered.forEach(item => {
       const kategori = item.soal_masalah_kategori;
       kategoriCount[kategori] = (kategoriCount[kategori] || 0) + 1;
     });
 
-    // Build result HTML
-    let html = `<h2>Nama: ${nama}</h2>`;
-    html += `<h3>Kelas: ${kelas}</h3>`;
+    // Bangun HTML hasil
+    let html = ``;
+    html += ``;
     html += `<p><strong>Jumlah Item:</strong> ${jumlahItem}</p>`;
     html += `<p><strong>Skor:</strong> ${skor}</p>`;
 
     html += `<h3>Detail Jawaban</h3>`;
-    html += `<table border="1" cellpadding="8" cellspacing="0">
+    html += `<table>
                <tr>
                  <th>Nomor</th>
                  <th>Kategori</th>
@@ -87,9 +214,8 @@ async function cari() {
     });
     html += `</table>`;
 
-    // Show count per kategori
     html += `<h3>Rekapitulasi Kategori</h3>`;
-    html += `<table border="1" cellpadding="8" cellspacing="0">
+    html += `<table>
                <tr>
                  <th>Kategori</th>
                  <th>Jumlah Dipilih</th>
@@ -109,8 +235,6 @@ async function cari() {
     hasilContainer.innerHTML = "<p>Terjadi kesalahan saat mengambil data.</p>";
   }
 }
-
-
 </script>
 
 </body>

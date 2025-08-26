@@ -1,155 +1,228 @@
-   table {
-      border-collapse: collapse;
-      width: 100%;
-      margin-top: 20px;
-    }
-    th, td {
-      padding: 8px;
-      border: 1px solid #ccc;
-    }
-.register-user{
-  background-color: white;
+:root {
+  --primary: #b57edc;   /* Ungu utama */
+  --primary-dark: #734487; /* Ungu lebih gelap */
+  --dark: #2c3e50;
+  --light-gray: #f4f6f9;
+  --border: #ddd;
 }
-.nav{
+
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  background-color: var(--light-gray);
+  color: var(--dark);
+  line-height: 1.6;
+}
+
+/* ===== NAVBAR ===== */
+.nav {
   display: flex;
-  background-color: white;
-  width: 80%;
-  height: 7vh;
+  background-color: #fff;
+  width: 90%;
+  max-width: 1100px;
+  min-height: 60px;
   justify-content: center;
   align-items: center;
-  margin: 0 auto;
-  margin-top: 2%;
-  border-radius:6px;
-  gap:2%
+  margin: 20px auto;
+  border-radius: 10px;
+  gap: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  padding: 10px;
 }
 
-.nav a{
+.nav a {
   text-decoration: none;
+  font-weight: 600;
+  color: var(--dark);
+  padding: 6px 14px;
+  border-radius: 6px;
+  transition: 0.3s;
 }
-#registerForm {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.8s ease;
+
+.nav a:hover {
+  background-color: var(--primary);
+  color: #fff;
 }
-.register-user{
-    display: flex;
+
+/* ===== CARD FORM ===== */
+.register-user {
+  display: flex;
+  flex-direction: column;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 700px;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.register-user h1 {
+  text-align: center;
+  margin-bottom: 16px;
+  font-size: 22px;
+  color: var(--dark);
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.register-form input,
+.register-form select {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-size: 15px;
+}
+
+.register-form input:focus,
+.register-form select:focus {
+  border-color: var(--primary-dark);
+  box-shadow: 0 0 0 2px rgba(181, 126, 220, 0.2);
+}
+
+/* Button area */
+.btn-place {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.btn-place button {
+  flex: 1;
+  height: 42px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+/* Save button */
+#save_user {
+  background-color: #b57edc;
+  color: white;
+  min-height: 45px;
+}
+
+#save_user:hover {
+  background-color: var(--primary-dark);
+}
+
+/* Cancel button */
+.btn-place button[type="reset"] {
+  background-color: #e0e0e0;
+  color: var(--dark);
+  min-height: 45px;  /* rusak */
+ 
+}
+.btn-place button {
+  background-color: #e0e0e0;
+  color: var(--dark);
+  min-height: 45px;  /* rusak */
+ 
+}
+
+.btn-place button[type="reset"]:hover {
+  background-color: #ccc;
+}
+
+/* ===== TABLE ===== */
+.Kategori {
+  margin: 20px auto;
+  width: 90%;
+  max-width: 900px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.Kategori h1 {
+  text-align: center;
+  margin-bottom: 16px;
+  font-size: 22px;
+  color: var(--dark);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  background: var(--primary);
+  color: #fff;
+  text-align: center;
+}
+
+td {
+  background: #fafafa;
+}
+
+td button {
+  margin-right: 6px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+td button:first-child {
+  background-color: #3498db;
+  color: #fff;
+}
+
+td button:first-child:hover {
+  background-color: #2c80b4;
+}
+
+td button:last-child {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+td button:last-child:hover {
+  background-color: #c0392b;
+}
+
+/* ===== RESPONSIVE ===== */
+@media screen and (max-width: 768px) {
+  .nav {
     flex-direction: column;
-    margin: 0 auto;
-    margin-top: 10%;
-    width: 80%;
-    border-radius: 6px;
-    transition: 0.2s ease;
-    background-color: var(--green);
-    color: white;
-  }
-  .register-form{
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    width: 80%;
-  }
-  .register-user h1{
-    text-align: center;
+    gap: 10px;
   }
 
-  .register-form input{
-    width: 80%;
-    margin: 0 auto;
-    margin-top: 3%;
+  .btn-place {
+    flex-direction: column;
   }
 
-  .register-form select{
-    width: 80%;
-    margin: 0 auto;
-    margin-top: 3%;
-    margin-bottom: 3%;
-  }
-  .btn-place{
-    display: flex;
-    flex-direction: row;
-    justify-items: center;
-    justify-content: space-around;
-      margin: 0 auto;
-    margin-bottom: 8%;
-      gap:6px;
-    width: 80%;
-  }
   .btn-place button {
-    height: 30px;
     width: 100%;
-    border: none;
-  }
-  #save_user{
-    background-color: var(--green);
-    color: white;
-  }
-  
-  .Kategori h1{
-    text-align: center;
-  }
-/* When active (visible) */
-#registerForm.active {
-  max-height: 500px; /* Set this high enough to show the full form */
-}
-.register-user.bg-toggled {
-  background-color: white;
-  color: black; /* Or whatever color you want */
-}
-@media screen and (max-width:768px){
-  .register-user{
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    margin-top: 10%;
-    width: 80%;
-    border-radius: 6px;
-    transition: 0.2s ease;
-    background-color: var(--green);
-    color: white;
-  }
-  .register-form{
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    width: 80%;
-  }
-  .register-user h1{
-    text-align: center;
   }
 
-  .register-form input{
-    width: 80%;
-    margin: 0 auto;
-    margin-top: 3%;
-  }
-
-  .register-form select{
-    width: 80%;
-    margin: 0 auto;
-    margin-top: 3%;
-    margin-bottom: 3%;
-  }
-  .btn-place{
-    display: flex;
-    flex-direction: row;
-    justify-items: center;
-    justify-content: space-around;
-      margin: 0 auto;
-    margin-bottom: 8%;
-      gap:6px;
-    width: 80%;
-  }
-  .btn-place button {
-    height: 30px;
-    width: 100%;
-    border: none;
-  }
-  #save_user{
-    background-color: var(--green);
-    color: white;
-  }
-  
-  .Kategori h1{
-    text-align: center;
+  td, th {
+    font-size: 14px;
+    padding: 10px;
   }
 }

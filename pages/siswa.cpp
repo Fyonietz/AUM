@@ -74,14 +74,16 @@ EXPORT int auth_siswa(struct mg_connection *connection, void *callbackdata) {
 
     return 200;
 }
-
 EXPORT int submit(struct mg_connection *connection, void *callback) {
-    char post_data[1024] = {0};
-    int post_data_length = mg_read(connection, post_data, sizeof(post_data) - 1);
-    post_data[post_data_length] = '\0'; 
-    std::string body(post_data);
-    Db db;
-    // Print raw data for debugging
+    std::string body;
+    char buffer[2048];
+    int bytes_read;
+
+    // Read the full POST body
+    while ((bytes_read = mg_read(connection, buffer, sizeof(buffer))) > 0) {
+        body.append(buffer, bytes_read);
+    }
+
     std::cout << "Received POST data: " << body << std::endl;
 
     json parsed;
@@ -96,7 +98,6 @@ EXPORT int submit(struct mg_connection *connection, void *callback) {
         return 400;
     }
 
-    // The input is an array, so we'll iterate through it
     if (!parsed.is_array()) {
         mg_printf(connection,
             "HTTP/1.1 400 Bad Request\r\n"
@@ -106,20 +107,21 @@ EXPORT int submit(struct mg_connection *connection, void *callback) {
         return 400;
     }
 
-    // Iterate through each element of the array
+    Db db;
+
     for (const auto& item : parsed) {
         db.Open();
-        // Extract relevant data
         std::string nama = item.value("nama", "");
         std::string kelas = item.value("kelas", "");
         std::string id = item.value("id", "");
         std::string nama_bidang_masalah = item.value("nama_bidang_masalah", "");
-        std::string query = "INSERT INTO hasil (nama, kelas, soal_masalah_id, soal_masalah_kategori) VALUES ('"+nama+"','"+kelas+"','"+id+"','"+nama_bidang_masalah+"')";
+
+        std::string query = "INSERT INTO hasil (nama, kelas, soal_masalah_id, soal_masalah_kategori) VALUES ('" +
+                            nama + "','" + kelas + "','" + id + "','" + nama_bidang_masalah + "')";
         db.QueryWithResults(query);
         db.Close();
     }
 
-    // Create a success response
     std::string response_body = R"({"success": true, "message": "Data processed successfully"})";
 
     mg_printf(connection,

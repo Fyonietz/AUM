@@ -18,6 +18,7 @@ extern "C" EXPORT void update(struct mg_context *context) {
     Route.add(context,"/dashboard",dashboard_admin,0);
     Route.add(context,"/dashboard/hasil",bk_hasil,0);
     Route.add(context,"/dashboard/siswa",bk_user,0);
+    Route.add(context,"/dashboard/laporan",bk_laporan,0);
     Route.add(context,"/auth",auth,0);
     Route.add(context,"/whoiam",me,0);
     Route.add(context,"/auth/siswa",auth_siswa,0);
@@ -30,6 +31,7 @@ extern "C" EXPORT void update(struct mg_context *context) {
     Route.add(context,"/api/save",Save_Kategori,0);
     Route.add(context,"/api/read",Read_Kategori,0);
     Route.add(context,"/api/hasil",hasil,0);
+    Route.add(context,"/api/hasilkelas",hasil_kelas,0);
     Route.add(context,"/api/user",akun,0);
     // Handle static files (CSS, JS, images)
     Route.add(context,"/style.css",static_file,0);
