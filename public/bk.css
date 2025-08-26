@@ -1,20 +1,26 @@
 /* GLOBAL STYLES */
 :root {
-    --purple: #b57edc;
-    --purple-dark: #000;
-    --primary-blue: #1E90FF;
-    --blue-dark: #166acb;
-    --green: #4caf50;
-    --green-dark: #3d8c41;
-    --orange: #FF9800;
-    --orange-dark: #cc7a00;
-    --white: #ffffff;
-    --text-color: #000000;
+    --purple: #b57edc;             /* KEEP as is */
+    --purple-dark: #5a2a8a;        /* Darker purple, more harmonious than black */
+    
+    --primary-blue: #3b82f6;       /* Softer, modern blue */
+    --blue-dark: #1e40af;          /* Deeper blue for hover, active states */
+    
+    --green: #22c55e;              /* Fresh lime-green, friendly */
+    --green-dark: #15803d;         /* Darker green for hover */
+    
+    --orange: #f97316;             /* Warm orange, vibrant but not harsh */
+    --orange-dark: #b45309;        /* Darker orange for hover */
+    
+    --white: #ffffff;              /* Keep white */
+    --text-color: #1f2937;         /* Dark slate-gray for better readability than pure black */
+    
     --spacing: 1rem;
     --border-radius: 8px;
     --font: 'Poppins', 'Arial', sans-serif;
     --shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+
 
 * {
     box-sizing: border-box;
@@ -46,7 +52,6 @@ body {
 }
 
 .sidebar .logo {
-    margin-top: 20%;
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 2rem;
@@ -107,7 +112,7 @@ body {
 header {
     position: fixed;
     top: 0;
-    left: 240px; /* sidebar width */
+    left: 240px !important; /* sidebar width */
     right: 0;
     height: 60px;
     background-color: var(--white);
@@ -193,7 +198,7 @@ header h1 {
 footer {
     position: fixed;
     bottom: 0;
-    left: 240px; /* sidebar width */
+    left: 240px !important; /* sidebar width */
     right: 0;
     height: 50px;
     background-color:white;
@@ -207,7 +212,12 @@ footer {
     z-index: 1200;
     transition: left 0.3s ease;
 }
-
+footer p{
+    display: inline;
+    margin-left: 2%;
+    margin-right: 2%;
+    color: var(--purple-dark);
+}
 /* Menu Toggle button (hamburger) */
 .menu-toggle {
     display: none;
@@ -250,7 +260,7 @@ footer {
     }
     /* Header fills width, adds padding to not overlap menu */
     header {
-        left: 0;
+        left: 0 !important;
         padding-left: 3.5rem; /* space for menu toggle */
         height: 50px;
         font-size: 1.25rem;
@@ -267,7 +277,7 @@ footer {
         padding: calc(var(--spacing) + 50px) var(--spacing) calc(var(--spacing) + 50px);
     }
     footer {
-        left: 0;
+        left: 0 !important;
     }
 
     .menu-toggle {

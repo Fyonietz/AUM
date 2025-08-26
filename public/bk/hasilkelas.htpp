@@ -116,6 +116,7 @@
       <option value="">-- Pilih Kelas --</option>
     </select>
     <button onclick="tampilkanHasil()">Tampilkan</button>
+    <button onclick="window.location.href='/dashboard'">Kembali</button>
   </div>
 
   <div id="hasilContainer"><p>Silakan pilih kelas lalu klik Tampilkan.</p></div>

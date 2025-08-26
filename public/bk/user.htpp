@@ -98,7 +98,16 @@
         flex-direction: column; /* Susun elemen secara vertikal di perangkat kecil */
         align-items: center;
       }
-
+      .search-container{
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 80%;
+        margin: 0 auto;
+        justify-content: center;
+      }
+      .search-container button{
+        width: 90%;
+      }
       select, button {
         width: 100%; /* Menyesuaikan ukuran select dan button dengan lebar layar */
         margin: 5px 0; /* Memberikan jarak antar elemen */
@@ -119,6 +128,7 @@
 <h1>Daftar Akun</h1>
 <div class="search-container">
   <input type="text" id="searchInput" placeholder="Cari nama, kelas, atau password..." oninput="filterUserList()" />
+  <button onclick="window.location.href='/dashboard'">Kembali</button>
 </div>
 
 <div id="userListContainer">Loading...</div>
