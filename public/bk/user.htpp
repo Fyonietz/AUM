@@ -5,10 +5,121 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Hasil</title>
 </head>
+<style>
+  :root {
+  --purple: #b57edc;
+  --purple-dark: #734487;
+  --white: #ffffff;
+  --gray-light: #f4f4f4;
+  --gray: #9e9e9e;
+  --radius: 12px;
+  --shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  --font: 'Poppins', sans-serif;
+  }
+  body{
+    font-family: var(--font);
+  }
+  h1{
+    text-align: center;
+  }
+    .search-container{
+      display: flex;
+      justify-items: center;
+    }
+    input{
+      padding: 10px;
+     border-radius: var(--radius);
+    border: 1px solid var(--gray);
+    outline: none;
+    font-size: 14px;
+    transition: 0.2s ease;
+    width: 80%;
+    margin: 0 auto;
+    }
+    select {
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      outline: none;
+      min-width: 200px;
+      max-width: 100%; /* Agar select box tidak meluap */
+      box-sizing: border-box;
+    }
+    
+    button {
+      margin-left: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #8e44ad, #6c3483);
+      color: #fff;
+      cursor: pointer;
+      font-weight: 500;
+      transition: 0.2s;
+      max-width: 100%; /* Menyesuaikan button dengan lebar layar */
+      box-sizing: border-box;
+    }
+    
+    button:hover {
+      background: linear-gradient(135deg, #9b59b6, #7d3c98);
+    }
+    
+    /* Tabel */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 12px;
+      margin-top: 20px;
+      table-layout: fixed; /* Membuat tabel menyesuaikan lebar kontainer */
+    }
+    
+    th, td {
+      padding: 12px 16px;
+      text-align: center;
+      border: 1px solid #ddd;
+      word-wrap: break-word; /* Agar teks dalam sel tidak meluap */
+      overflow: hidden;
+      text-overflow: ellipsis; /* Agar teks panjang terpotong */
+    }
+    
+    th {
+      background-color: #8e44ad;
+      color: white;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #f3e8ff;
+    }
+
+    /* Media Query untuk perangkat dengan lebar layar lebih kecil */
+    @media (max-width: 600px) {
+      .register-user {
+        flex-direction: column; /* Susun elemen secara vertikal di perangkat kecil */
+        align-items: center;
+      }
+
+      select, button {
+        width: 100%; /* Menyesuaikan ukuran select dan button dengan lebar layar */
+        margin: 5px 0; /* Memberikan jarak antar elemen */
+      }
+
+      table {
+        width: 100%; /* Membuat tabel menyesuaikan lebar layar */
+      }
+
+      th, td {
+        font-size: 12px; /* Menyesuaikan ukuran font untuk perangkat kecil */
+        padding: 8px 10px; /* Mengurangi padding pada perangkat kecil */
+      }
+    }
+</style>
 <body>
 
-<h2>Daftar Akun</h2>
-<input type="text" id="searchInput" placeholder="Cari nama, kelas, atau password..." oninput="filterUserList()" />
+<h1>Daftar Akun</h1>
+<div class="search-container">
+  <input type="text" id="searchInput" placeholder="Cari nama, kelas, atau password..." oninput="filterUserList()" />
+</div>
 
 <div id="userListContainer">Loading...</div>
 

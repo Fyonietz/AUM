@@ -79,25 +79,32 @@ h1{
 .btn-place button{
   width: 47%;
 }
-/* === Table Style === */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-th, td {
-  padding: 12px 16px;
-  text-align: center;
-}
-
-th {
-  background-color: #8e44ad;
-  color: #ffff;
-  font-weight: 600;
-}
+  /* Tabel */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 12px;
+      margin-top: 20px;
+      table-layout: fixed; /* Membuat tabel menyesuaikan lebar kontainer */
+    }
+    
+    th, td {
+      padding: 12px 16px;
+      text-align: center;
+      border: 1px solid #ddd;
+      word-wrap: break-word; /* Agar teks dalam sel tidak meluap */
+      overflow: hidden;
+      text-overflow: ellipsis; /* Agar teks panjang terpotong */
+    }
+    
+    th {
+      background-color: #8e44ad;
+      color: white;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #f3e8ff;
+    }
 
 /* Detail Jawaban Table (1 warna ungu gradasi) */
 .detail-table tr:nth-child(odd) td {

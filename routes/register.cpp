@@ -33,6 +33,7 @@ extern "C" EXPORT void update(struct mg_context *context) {
     Route.add(context,"/api/hasil",hasil,0);
     Route.add(context,"/api/hasilkelas",hasil_kelas,0);
     Route.add(context,"/api/user",akun,0);
+    Route.add(context,"/api/stats",stats,0);
     // Handle static files (CSS, JS, images)
     Route.add(context,"/style.css",static_file,0);
     Route.add(context,"/bk.css",static_file,0);

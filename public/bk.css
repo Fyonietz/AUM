@@ -11,8 +11,9 @@
     --white: #ffffff;
     --text-color: #000000;
     --spacing: 1rem;
-    --border-radius: 6px;
-    --font: 'Arial', sans-serif;
+    --border-radius: 8px;
+    --font: 'Poppins', 'Arial', sans-serif;
+    --shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 * {
@@ -23,132 +24,299 @@
 
 body {
     font-family: var(--font);
-    background-color: var(--purple); /* ganti background jadi ungu */
+    background-color: var(--purple);
     color: var(--text-color);
+    transition: padding-left 0.3s ease;
 }
 
-/* CONTAINER */
-.container {
-    min-height: 100vh;
+/* Sidebar basic style */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 240px;
+    height: 100%;
+    padding: 20px;
+    background-color: #2c2c54; /* dark navy for contrast */
+    color: #f0f0f0;
+    z-index: 1100;
+    overflow-y: auto;
+    transition: transform 0.3s ease;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.3);
+}
+
+.sidebar .logo {
+    margin-top: 20%;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: #d1c4e9; /* light purple */
+}
+
+.sidebar .menu button {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: var(--spacing);
-    padding: var(--spacing);
-}
-
-/* HEADER BOX */
-.bk {
-    width: 90%;
-    background-color: var(--white); /* ganti box jadi putih */
+    gap: 0.6rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 10px 15px;
+    background-color: transparent;
+    border: none;
     border-radius: var(--border-radius);
-    padding: 1rem;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    font-size: 1rem;
+    color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.bk h1 {
-    font-size: 1.5 rem;
+.sidebar .menu button.user-acc {
+    background-color: #1E90FF; /* primary blue */
+}
+.sidebar .menu button.result-aum {
+    background-color: #4caf50; /* green */
+}
+.sidebar .menu button.report {
+    background-color: #FF9800; /* orange */
+}
+
+.sidebar .menu button:hover,
+.sidebar .menu button:focus {
+    background-color: #7e57c2; /* purple hover */
+    color: #fff;
+    outline: none;
+}
+
+.sidebar a.logout {
+    display: block;
+    margin-top: 2rem;
+    color: #b0a7db;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 15px;
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s ease;
+}
+.sidebar a.logout:hover,
+.sidebar a.logout:focus {
+    background-color: #7e57c2;
+    color: #fff;
+    outline: none;
+}
+
+/* Header styles */
+header {
+    position: fixed;
+    top: 0;
+    left: 240px; /* sidebar width */
+    right: 0;
+    height: 60px;
+    background-color: var(--white);
     color: var(--purple-dark);
+    display: flex;
+    align-items: center;
+    padding: 0 1.5rem;
+    font-weight: 700;
+    font-size: 1.5rem;
+    box-shadow: var(--shadow);
+    z-index: 1200;
+    transition: left 0.3s ease, padding-left 0.3s ease;
 }
 
-/* STATS SECTION */
+header h1 {
+    margin: 0;
+    padding-left: 10px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--purple-dark);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Container content with sidebar offset */
+.container {
+    margin-left: 240px; /* sidebar width */
+    padding: calc(var(--spacing) + 60px) var(--spacing) calc(var(--spacing) + 50px);
+    transition: margin-left 0.3s ease;
+    font-family: var(--font);
+}
+
+/* Stats styling */
 .stats {
-    width: 90%;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 0.5rem;
+    gap: var(--spacing);
+    max-width: 900px;
+    margin: 10% auto 0 auto;
 }
 
-.stats div {
-    background-color: var(--white); /* ganti jadi putih */
+.stats > div {
+    background-color: var(--white);
     border-radius: var(--border-radius);
-    text-align: center;
-    padding: 0.75rem 0;
-    font-weight: 600;
-    flex: 1 1 30%;
-    min-width: 100px;
+    box-shadow: var(--shadow);
+    padding: 1rem 1.5rem;
+    flex: 1 1 200px;
     color: var(--purple-dark);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-/* MENU BUTTONS */
-.menu {
-    width: 90%;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-.menu button {
-    border: none;
-    border-radius: var(--border-radius);
-    padding: 0.75rem;
-    font-size: 1rem;
-    color: var(--white);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    gap: 1rem;
 }
 
-/* Button Colors */
+.stats i {
+    font-size: 2.5rem;
+    color: #7e57c2; /* purple icon color */
+    flex-shrink: 0;
+    text-align: center;
+    justify-items: center;
+}
+
+.stats .text-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.stats h1 {
+    font-size: 2rem;
+    margin: 0;
+}
+
+.stats p {
+    margin: 0;
+    font-weight: 600;
+    color: #555;
+}
+
+/* Footer styles */
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 240px; /* sidebar width */
+    right: 0;
+    height: 50px;
+    background-color:white;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1rem;
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1200;
+    transition: left 0.3s ease;
+}
+
+/* Menu Toggle button (hamburger) */
+.menu-toggle {
+    display: none;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1300;
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #2c2c54;
+    cursor: pointer;
+}
+
+/* Sidebar toggle effect */
+.sidebar.active {
+    transform: translateX(0);
+}
+
+@media (max-width: 768px) {
+    /* Sidebar off-screen by default on mobile */
+    .sidebar {
+        width: 200px;
+        transform: translateX(-100%);
+    }
+    .sidebar.active {
+        transform: translateX(0);
+    }
+   .stats div {
+        flex-direction: column;      /* stack icon and text vertically */
+        align-items: center;         /* center horizontally */
+        justify-content: center;     /* center vertically */
+        text-align: center;          /* center text */
+        gap: 0.5rem;                 /* reduce gap for tighter look */
+    }
+
+    .stats i {
+        font-size: 3rem;             /* slightly bigger icon for mobile */
+        margin: 0;                   /* reset any margin */
+    }
+    /* Header fills width, adds padding to not overlap menu */
+    header {
+        left: 0;
+        padding-left: 3.5rem; /* space for menu toggle */
+        height: 50px;
+        font-size: 1.25rem;
+    }
+
+    header h1 {
+        font-size: 1.4rem;
+        padding-left: 0;
+    }
+
+    /* Container full width with no margin */
+    .container {
+        margin-left: 0;
+        padding: calc(var(--spacing) + 50px) var(--spacing) calc(var(--spacing) + 50px);
+    }
+    footer {
+        left: 0;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+    body.sidebar-open header,
+body.sidebar-open .container,
+body.sidebar-open footer {
+    left: 200px !important;
+}
+
+}
+
+/* When sidebar toggled, shift header and container on desktop */
+body.sidebar-open header,
+body.sidebar-open .container,
+body.sidebar-open footer {
+    left: 240px;
+}
+
+/* When sidebar closed */
+header,
+.container,
+footer {
+    left: 0;
+    transition: left 0.3s ease;
+}
+
+/* Button colors for menu */
 .user-acc {
     background-color: var(--primary-blue);
+    color: var(--white);
 }
-.result-aum {
-    background-color: var(--green);
-}
-.report {
-    background-color: var(--orange);
-}
-
-/* Hover & Active States */
-.user-acc:hover,
-.user-acc:active {
+.user-acc:hover {
     background-color: var(--blue-dark);
 }
 
-.result-aum:hover,
-.result-aum:active {
+.result-aum {
+    background-color: var(--green);
+    color: var(--white);
+}
+.result-aum:hover {
     background-color: var(--green-dark);
 }
 
-.report:hover,
-.report:active {
-    background-color: var(--orange-dark);
+.report {
+    background-color: var(--orange);
+    color: var(--white);
 }
-
-/* RESPONSIVE: DESKTOP AND TABLET */
-@media screen and (min-width: 768px) {
-    .container {
-        padding: 2rem;
-    }
-
-    .stats {
-        justify-content: space-between;
-    }
-
-    .stats div {
-        flex: 1;
-        margin: 0 0.25rem;
-    }
-
-    .menu {
-        flex-direction: row;
-        justify-content: space-between;
-    }
-
-    .menu button {
-        flex: 1;
-        margin: 0 0.25rem;
-    }
-
-    .bk h1 {
-        font-size: 2rem;
-    }
+.report:hover {
+    background-color: var(--orange-dark);
 }

@@ -212,3 +212,84 @@ EXPORT int akun(struct mg_connection *connection, void *callback){
 
     return 200;
 }
+
+EXPORT int stats(struct mg_connection *connection, void *callback) {
+    if (!open_bk) {
+        mg_printf(connection,
+            "HTTP/1.1 401 Unauthorized\r\n"
+            "Content-Type: text/html\r\n"
+            "Connection: close\r\n\r\n"
+            "<html><body><h1>Unauthorized</h1></body></html>");
+        return 401;
+    }
+
+    Db db;
+    if (!db.Open()) {
+        mg_printf(connection,
+            "HTTP/1.1 500 Internal Server Error\r\n"
+            "Content-Type: text/plain\r\n"
+            "Content-Length: 21\r\n\r\n"
+            "Failed to open DB.\n");
+        return 500;
+    }
+
+    sqlite3_stmt *stmt;
+    std::string mostSelectedCategory;
+    int mostSelectedCount = 0;
+    int totalAccounts = 0;
+    int totalSubmissions = 0;
+
+    // 1. Most selected category
+    const char *sql1 =
+        "SELECT soal_masalah_kategori, COUNT(*) as total "
+        "FROM hasil "
+        "GROUP BY soal_masalah_kategori "
+        "ORDER BY total DESC LIMIT 1;";
+    if (sqlite3_prepare_v2(db.db, sql1, -1, &stmt, nullptr) == SQLITE_OK) {
+        if (sqlite3_step(stmt) == SQLITE_ROW) {
+            mostSelectedCategory = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
+            mostSelectedCount = sqlite3_column_int(stmt, 1);
+        }
+        sqlite3_finalize(stmt);
+    }
+
+    // 2. Total registered accounts
+    const char *sql2 = "SELECT COUNT(*) FROM siswa;";
+    if (sqlite3_prepare_v2(db.db, sql2, -1, &stmt, nullptr) == SQLITE_OK) {
+        if (sqlite3_step(stmt) == SQLITE_ROW) {
+            totalAccounts = sqlite3_column_int(stmt, 0);
+        }
+        sqlite3_finalize(stmt);
+    }
+
+    // 3. Total unique submissions
+    const char *sql3 = "SELECT COUNT(DISTINCT nama) FROM hasil;";
+    if (sqlite3_prepare_v2(db.db, sql3, -1, &stmt, nullptr) == SQLITE_OK) {
+        if (sqlite3_step(stmt) == SQLITE_ROW) {
+            totalSubmissions = sqlite3_column_int(stmt, 0);
+        }
+        sqlite3_finalize(stmt);
+    }
+
+    db.Close();
+
+    // Build JSON
+    nlohmann::json jsonResponse = {
+        {"most_selected_category", mostSelectedCategory},
+        {"most_selected_count", mostSelectedCount},
+        {"total_accounts", totalAccounts},
+        {"total_submissions", totalSubmissions}
+    };
+
+    std::string response = jsonResponse.dump();
+
+    mg_printf(connection,
+        "HTTP/1.1 200 OK\r\n"
+        "Content-Type: application/json\r\n"
+        "Content-Length: %zu\r\n\r\n"
+        "%s",
+        response.length(),
+        response.c_str());
+
+    return 200;
+}

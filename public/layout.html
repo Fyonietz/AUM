@@ -1,33 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Dashboard</title>
     @head
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/bk.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Dashboard</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+   
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     @end
+     <link rel="stylesheet" href="/bk.css" />
 </head>
 <body>
-    <div class="container">
-        <div class="bk">
-            <h1>GURU BK</h1>
-            <a href="/logout">Logout</a>
-        </div>
-        <div class="stats">
-            <div class="filled"><p>552</p></div>
-            <div class="unfilled"><p>112</p></div>
-            <div class="domminant"><p>Akademik</p></div>
-        </div>
+    <header><h1>Alat Ungkap Masalah</h1></header>
+    
+    <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle Sidebar">
+        <i class="fa fa-bars"></i>
+    </button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="logo">GURU BK</div>
         <div class="menu">
-            <button class="user-acc"  onclick="window.location.href='/dashboard/siswa'"><i class="fa-solid fa-user"></i> AKUN SISWA</button>
-            <button class="result-aum" onclick="window.location.href='/dashboard/hasil'"><i class="fa-solid fa-chart-simple"></i> HASIL AUM</button>
-            <button class="report" onclick="window.location.href='/dashboard/laporan'"><i class="fa-solid fa-sheet-plastic"></i> LAPORAN</button>
+            <button class="user-acc" onclick="window.location.href='/dashboard/siswa'">
+                <i class="fa-solid fa-user"></i> AKUN SISWA
+            </button>
+            <button class="result-aum" onclick="window.location.href='/dashboard/hasil'">
+                <i class="fa-solid fa-chart-simple"></i> HASIL AUM
+            </button>
+            <button class="report" onclick="window.location.href='/dashboard/laporan'">
+                <i class="fa-solid fa-sheet-plastic"></i> LAPORAN
+            </button>
+        </div>
+        <a href="/logout" class="logout">Logout</a>
+    </div>
+
+    <div class="container">
+        <div class="stats">
+            <div class="total-siswa">
+                <i class="fa-solid fa-user"></i>
+                <div class="text-group">
+                    <h1 id="total-siswa">0</h1>
+                    <p>Siswa</p>
+                </div>
+            </div>
+            <div class="filled">
+                <i class="fa-solid fa-clipboard-check"></i>
+                <div class="text-group">
+                    <h1 id="total-mengisi">0</h1>
+                    <p>Mengisi</p>
+                </div>
+            </div>
+            <div class="unfilled">
+                <i class="fa-solid fa-clipboard-list"></i>
+                <div class="text-group">
+                    <h1 id="total-belum-mengisi">0</h1>
+                    <p>Belum Mengisi</p>
+                </div>
+            </div>
+            <div class="domminant">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <div class="text-group">
+                    <h1 id="masalah-terberat">N/A</h1>
+                    <p>Masalah Terberat</p>
+                </div>
+            </div>
         </div>
     </div>
+
+    <footer><p>Made By TEFA RPL </p><p> | </p>  <a href="https://www.instagram.com/fyonietz?igsh=enV0cXE4NWg0bmpw">@Fyonietz</a></footer>
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const menuToggle = document.querySelector('.menu-toggle');
+
+    function toggleSidebar() {
+        sidebar.classList.toggle('active');
+        document.body.classList.toggle('sidebar-open');
+    }
+
+    // Close sidebar if clicking outside sidebar or toggle button
+    document.addEventListener('click', function(event) {
+        const isClickInsideSidebar = sidebar.contains(event.target);
+        const isClickOnToggle = menuToggle.contains(event.target);
+
+        if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('active')) {
+            sidebar.classList.remove('active');
+            document.body.classList.remove('sidebar-open');
+        }
+    });
+
+    fetch("api/stats")
+        .then(response => {
+            if (!response.ok) throw new Error("Network response was not ok");
+            return response.json();
+        })
+        .then(data => {
+            const match = data.most_selected_category?.match(/^\w+/);
+            const code = match ? match[0] : "N/A";
+            document.getElementById("masalah-terberat").textContent = code;
+            document.getElementById("total-siswa").textContent = data.total_accounts;
+            document.getElementById("total-mengisi").textContent = data.total_submissions;
+            document.getElementById("total-belum-mengisi").textContent = data.total_accounts - data.total_submissions;
+        })
+        .catch(error => {
+            console.error("Fetch error:", error);
+        });
+</script>
+
 </body>
 </html>

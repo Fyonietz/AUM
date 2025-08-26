@@ -10,17 +10,24 @@
       background-color: #f8f9fa;
       color: #333;
       padding: 20px;
+      overflow-x: hidden; /* Menghindari overflow horizontal global */
+      margin: 0;
     }
+    
     h1 {
       text-align: center;
       margin-bottom: 20px;
       color: #4a148c;
     }
+    
     .register-user {
       display: flex;
       justify-content: center;
-      margin-bottom: 20px;
+      flex-wrap: wrap; /* Agar elemen bisa wrap di mobile */
+      gap: 10px; /* Menambahkan jarak antar elemen */
+      max-width: 100%;
     }
+    
     select {
       padding: 10px 14px;
       border-radius: 8px;
@@ -28,7 +35,10 @@
       border: 1px solid #ccc;
       outline: none;
       min-width: 200px;
+      max-width: 100%; /* Agar select box tidak meluap */
+      box-sizing: border-box;
     }
+    
     button {
       margin-left: 10px;
       padding: 10px 20px;
@@ -39,28 +49,61 @@
       cursor: pointer;
       font-weight: 500;
       transition: 0.2s;
+      max-width: 100%; /* Menyesuaikan button dengan lebar layar */
+      box-sizing: border-box;
     }
+    
     button:hover {
       background: linear-gradient(135deg, #9b59b6, #7d3c98);
     }
+    
+    /* Tabel */
     table {
       width: 100%;
       border-collapse: collapse;
       border-radius: 12px;
-      overflow: hidden;
       margin-top: 20px;
+      table-layout: fixed; /* Membuat tabel menyesuaikan lebar kontainer */
     }
+    
     th, td {
       padding: 12px 16px;
       text-align: center;
       border: 1px solid #ddd;
+      word-wrap: break-word; /* Agar teks dalam sel tidak meluap */
+      overflow: hidden;
+      text-overflow: ellipsis; /* Agar teks panjang terpotong */
     }
+    
     th {
       background-color: #8e44ad;
       color: white;
     }
+    
     tr:nth-child(even) {
       background-color: #f3e8ff;
+    }
+
+    /* Media Query untuk perangkat dengan lebar layar lebih kecil */
+    @media (max-width: 600px) {
+      .register-user {
+        flex-direction: column; /* Susun elemen secara vertikal di perangkat kecil */
+        align-items: center;
+      }
+
+      select, button {
+        width: 100%; /* Menyesuaikan ukuran select dan button dengan lebar layar */
+        margin: 5px 0; /* Memberikan jarak antar elemen */
+      }
+
+      table {
+        width: 100%; /* Membuat tabel menyesuaikan lebar layar */
+      }
+
+      th, td {
+        font-size: 12px; /* Menyesuaikan ukuran font untuk perangkat kecil */
+        padding: 8px 10px; /* Mengurangi padding pada perangkat kecil */
+      }
     }
   </style>
 </head>
@@ -76,6 +119,8 @@
   </div>
 
   <div id="hasilContainer"><p>Silakan pilih kelas lalu klik Tampilkan.</p></div>
+
+  <div id="tabelContainer"></div>
 
   <script>
     let dataHasil = [];
@@ -154,7 +199,7 @@
       }
       html += `</table>`;
 
-      hasilContainer.innerHTML = html;
+      document.getElementById("tabelContainer").innerHTML = html;
     }
 
     window.onload = loadData;
