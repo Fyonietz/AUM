@@ -8,14 +8,13 @@
 
 <body>
   <div class="nav">
-    <a href="/logout">Log Out</a>
-    <a href="/admin">Dashboard</a>
+    <a href="/admin">Kembali</a>
   </div>
   
   <div class="register-user">
-  <h1 id="toggleRegister">Register User</h1>
+  <h1 id="toggleRegister">Register Akun</h1>
 
-  <div id="registerForm" class="register-form">
+  <div id="registerForm" class="register-form toggle-container hidden">
     <input type="text" name="nama" id="nama" placeholder="Nama">
     <input type="text" name="password" id="password" placeholder="Password">
 
@@ -33,11 +32,17 @@
 
     <div class="btn-place">
       <button id="save_user" onclick="save_user()">Save</button>
-      <button onclick="toggle_ui()" id="cancel">Cancel</button>
+      <button id="toggleRegister" >Cancel</button>
     </div>
   </div>
 </div>
 
+  <div class="daftar-user">
+    <h1 id="toggleDaftar">Daftar User</h1>
+    <div id="iframeContainer" class="toggle-container hidden">
+      <iframe src="/dashboard/siswa" frameborder="0"></iframe>
+    </div>
+  </div>
     <script src="/admin/script-admin.js"></script>
 </body>
 </html>

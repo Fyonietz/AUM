@@ -141,6 +141,67 @@ EXPORT int admin_crud_user(struct mg_connection *connection, void *callback) {
     Server.SSR("public/admin/user.htpp", connection);
     return 200;
 }
+EXPORT int admin_crud_kategori(struct mg_connection *connection, void *callback) {
+    const struct mg_request_info *req_info = mg_get_request_info(connection);
+    Db db;
+
+    // Open DB
+    if (!db.Open()) {
+        mg_printf(connection,
+            "HTTP/1.1 500 Internal Server Error\r\n"
+            "Content-Type: text/html\r\n"
+            "Connection: close\r\n\r\n"
+            "<html><body><h1>Database error</h1></body></html>");
+        return 500;
+    }
+
+    // Get admin password hash (assuming this is your token)
+    std::string adminHash = db.GetSingleResult("SELECT Password FROM user WHERE Role='Admin';");
+    db.Close();
+
+    // Get Cookie header
+    const char* cookie_header = mg_get_header(connection, "Cookie");
+    if (!cookie_header) {
+        mg_printf(connection,
+            "HTTP/1.1 401 Unauthorized\r\n"
+            "Content-Type: text/html\r\n"
+            "Connection: close\r\n\r\n"
+            "<html><body><h1>Unauthorized</h1></body></html>");
+        return 401;
+    }
+
+    std::string cookies(cookie_header);
+    std::string tokenKey = "auth_token=";
+    size_t tokenPos = cookies.find(tokenKey);
+
+    if (tokenPos == std::string::npos) {
+        mg_printf(connection,
+            "HTTP/1.1 401 Unauthorized\r\n"
+            "Content-Type: text/html\r\n"
+            "Connection: close\r\n\r\n"
+            "<html><body><h1>Unauthorized</h1></body></html>");
+        return 401;
+    }
+
+    // Extract auth_token value
+    size_t start = tokenPos + tokenKey.length();
+    size_t end = cookies.find(";", start);
+    std::string token = cookies.substr(start, (end == std::string::npos) ? std::string::npos : end - start);
+
+    // Compare cookie token to stored admin password hash
+    if (token != adminHash) {
+        mg_printf(connection,
+            "HTTP/1.1 401 Unauthorized\r\n"
+            "Content-Type: text/html\r\n"
+            "Connection: close\r\n\r\n"
+            "<html><body><h1>Unauthorized</h1></body></html>");
+        return 401;
+    }
+
+    // Serve the admin page
+    Server.SSR("public/admin/kategori.htpp", connection);
+    return 200;
+}
 
 EXPORT int Save_Kategori(struct mg_connection *connection,void *callback){
     char post_data[1024] = {0};

@@ -125,7 +125,7 @@
 </style>
 <body>
 
-<h1>Daftar Akun</h1>
+<h1>Daftar User</h1>
 <div class="search-container">
   <input type="text" id="searchInput" placeholder="Cari nama, kelas, atau password..." oninput="filterUserList()" />
   <button onclick="window.location.href='/dashboard'">Kembali</button>
