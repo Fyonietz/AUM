@@ -4,12 +4,122 @@
     @head
     <title>Admin DB</title>
     <link rel="stylesheet" href="/admin/style-admin.css">
+    <link rel="stylesheet" href="/bk.css">
 </head>
 <body>
-    <div class="nav">
-      <a href="/admin/user">CRUD User</a>
-      <a href="/admin/kategori">CRUD Kategori</a>
+     <header><h1>Alat Ungkap Masalah</h1></header>
+    
+    <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle Sidebar">
+        <i class="fa fa-bars"></i>
+    </button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="logo">Admin</div>
+        <div class="menu">
+            <button class="user-acc" onclick="window.location.href='/admin/user'">
+                <i class="fa-solid fa-user"></i> KELOLA AKUN
+            </button>
+            <button class="result-aum" onclick="window.location.href='/admin/kategori'">
+                <i class="fa-solid fa-chart-simple"></i>KELOLA KATEGORI
+            </button>
+            <button class="report" onclick="window.location.href='/dashboard/laporan'">
+                <i class="fa-solid fa-sheet-plastic"></i> LAPORAN
+            </button>
+        </div>
+        <a href="/logout" class="logout">Logout</a>
     </div>
-    <script src="/script.js"></script>
+
+    <div class="container">
+        <div class="stats">
+            <div class="total-siswa">
+                <i class="fa-solid fa-user"></i>
+                <div class="text-group">
+                    <h1 id="total-siswa">0</h1>
+                    <p>Siswa</p>
+                </div>
+            </div>
+            <div class="filled">
+                <i class="fa-solid fa-clipboard-check"></i>
+                <div class="text-group">
+                    <h1 id="total-mengisi">0</h1>
+                    <p>Mengisi</p>
+                </div>
+            </div>
+            <div class="unfilled">
+                <i class="fa-solid fa-clipboard-list"></i>
+                <div class="text-group">
+                    <h1 id="total-belum-mengisi">0</h1>
+                    <p>Belum Mengisi</p>
+                </div>
+            </div>
+            <div class="domminant">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <div class="text-group">
+                    <h1 id="masalah-terberat">N/A</h1>
+                    <p>Masalah Terberat</p>
+                </div>
+            </div>
+            <div class="domminant">
+                <i class="fa-solid fa-bar-chart"></i>
+                <div class="text-group">
+                    <h1 id="jumlah-kategori">N/A</h1>
+                    <p>Jumlah Kategori Terdaftar</p>
+                </div>
+            </div>
+             <div class="domminant">
+                <i class="fa-solid  fa-pie-chart"></i>
+                <div class="text-group">
+                    <h1 id="jumlah-sub-kategori">N/A</h1>
+                    <p>Jumlah Pilihan Terdaftar</p>
+                </div>
+            </div>
+        </div>
+    </div>
+<footer>
+   <p>
+    Made By TEFA RPL &nbsp; | &nbsp; 
+    <a href="https://www.instagram.com/fyonietz?igsh=enV0cXE4NWg0bmpw">@Fyonietz</a>
+  </p> <footer><p>Made By TEFA RPL </p><p> | </p>  <a href="https://www.instagram.com/fyonietz?igsh=enV0cXE4NWg0bmpw">@Fyonietz</a></footer>
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const menuToggle = document.querySelector('.menu-toggle');
+
+    function toggleSidebar() {
+        sidebar.classList.toggle('active');
+        document.body.classList.toggle('sidebar-open');
+    }
+
+    // Close sidebar if clicking outside sidebar or toggle button
+    document.addEventListener('click', function(event) {
+        const isClickInsideSidebar = sidebar.contains(event.target);
+        const isClickOnToggle = menuToggle.contains(event.target);
+
+        if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('active')) {
+            sidebar.classList.remove('active');
+            document.body.classList.remove('sidebar-open');
+        }
+    });
+
+    fetch("api/stats")
+        .then(response => {
+            if (!response.ok) throw new Error("Network response was not ok");
+            return response.json();
+        })
+        .then(data => {
+            const match = data.most_selected_category?.match(/^\w+/);
+            const code = match ? match[0] : "N/A";
+            document.getElementById("masalah-terberat").textContent = code;
+            document.getElementById("total-siswa").textContent = data.total_accounts;
+            document.getElementById("total-mengisi").textContent = data.total_submissions;
+            document.getElementById("total-belum-mengisi").textContent = data.total_accounts - data.total_submissions;
+            document.getElementById("jumlah-kategori").textContent =data.total_category;
+            document.getElementById("jumlah-sub-kategori").textContent = data.total_sub_category;
+        })
+        .catch(error => {
+            console.error("Fetch error:", error);
+        });
+</script>
+
+    <!-- <script src="/script.js"></script> -->
 </body>
 </html>

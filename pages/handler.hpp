@@ -10,6 +10,7 @@
 #endif
 extern Pnix Server;
 extern bool open_bk;
+extern bool open_admin;
 EXPORT int login(struct mg_connection *connection,void *callback);
 EXPORT int login_redirect(struct mg_connection *connection,void *callback);
 EXPORT int static_file(struct mg_connection *connection,void *callback);

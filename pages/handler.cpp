@@ -2,7 +2,7 @@
 #include "../act/auth.hpp"
 Pnix Server;
 bool open_bk = false;
-
+bool open_admin=false;
 EXPORT int login(struct mg_connection *connection, void *callback) {
     // Check if user has a valid auth_token cookie
     const char* cookie_header = mg_get_header(connection, "Cookie");
@@ -174,6 +174,8 @@ EXPORT int auth(struct mg_connection *connection, void *callbackdata) {
         "Connection: close\r\n\r\n"
         "{\"success\": true, \"redirect\": \"/admin\"}",
         hashed_password.c_str());
+        open_admin=true;
+        open_bk=true;
         return 200;
     } else if(isBK){
          mg_printf(connection,
@@ -244,7 +246,7 @@ EXPORT int logout(struct mg_connection *connection, void *callback) {
         "Location: /login\r\n"
         "Set-Cookie: auth_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT\r\n"
         "Content-Length: 0\r\n"
-        "Connection: close\r\n\r\n");
+        "Connection: close\r\n\r\n");   
     return 302;
 }
 
