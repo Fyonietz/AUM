@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Data Berdasarkan Kategori</title>
+  <style>
+    :root {
+      --purple: #b57edc;
+      --purple-dark: #734487;
+      --white: #ffffff;
+      --gray-light: #f4f4f4;
+      --gray: #9e9e9e;
+      --radius: 12px;
+      --shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+      --font: 'Poppins', sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    .search-container {
+      display: flex;
+      justify-items: center;
+    }
+
+    input {
+      padding: 10px;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray);
+      outline: none;
+      font-size: 14px;
+      transition: 0.2s ease;
+      width: 80%;
+      margin: 0 auto;
+    }
+
+    select {
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      outline: none;
+      min-width: 200px;
+      max-width: 100%;
+      box-sizing: border-box;
+      display: block;
+      margin: 0 auto;
+    }
+
+    button {
+      margin-left: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #8e44ad, #6c3483);
+      color: #fff;
+      cursor: pointer;
+      font-weight: 500;
+      transition: 0.2s;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #9b59b6, #7d3c98);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 12px;
+      margin-top: 20px;
+      table-layout: fixed;
+    }
+
+    th, td {
+      padding: 12px 16px;
+      text-align: center;
+      border: 1px solid #ddd;
+      word-wrap: break-word;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    th {
+      background-color: #8e44ad;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f3e8ff;
+    }
+   .nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  max-width: 600px; /* or any width you prefer */
+  margin: 0 auto;
+  gap: 1rem; /* optional: adds space between the select and button */
+}
+
+    @media (max-width: 600px) {
+      .register-user {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .search-container {
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 80%;
+        margin: 0 auto;
+        justify-content: center;
+      }
+
+      .search-container button {
+        width: 90%;
+      }
+
+      select, button {
+        width: 100%;
+        margin: 5px 0;
+      }
+
+      table {
+        width: 100%;
+      }
+
+      th, td {
+        font-size: 12px;
+        padding: 8px 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h2>Pilih Kategori Masalah</h2>
+<div class="nav">
+   <select id="categorySelect">
+    <option value="">-- Pilih Kategori --</option>
+  </select>
+    <button onclick="window.location.href='/dashboard'">Kembali</button>
+</div>
+ 
+ 
+  <table id="questionTable" style="display: none;">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Soal Masalah</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      <!-- Data akan dimasukkan di sini -->
+    </tbody>
+  </table>
+
+  <script>
+    async function fetchData() {
+      try {
+        const response = await fetch('/api/read');
+        const data = await response.json();
+
+        // Kelompokkan data berdasarkan kategori
+        const grouped = {};
+        data.forEach(item => {
+          const category = item.nama_bidang_masalah;
+          if (!grouped[category]) grouped[category] = [];
+          grouped[category].push({ id: item.id, soal: item.nama_soal_masalah });
+        });
+
+        // Isi dropdown kategori
+        const select = document.getElementById('categorySelect');
+        Object.keys(grouped).forEach(category => {
+          const option = document.createElement('option');
+          option.value = category;
+          option.textContent = category;
+          select.appendChild(option);
+        });
+
+        // Tampilkan data dalam tabel saat kategori dipilih
+        select.addEventListener('change', () => {
+          const selected = select.value;
+          const table = document.getElementById('questionTable');
+          const tbody = document.getElementById('tableBody');
+          tbody.innerHTML = '';
+
+          if (selected && grouped[selected]) {
+            grouped[selected].forEach(item => {
+              const row = document.createElement('tr');
+
+              const idCell = document.createElement('td');
+              idCell.textContent = item.id;
+
+              const soalCell = document.createElement('td');
+              soalCell.textContent = item.soal;
+
+              row.appendChild(idCell);
+              row.appendChild(soalCell);
+              tbody.appendChild(row);
+            });
+
+            table.style.display = 'table';
+          } else {
+            table.style.display = 'none';
+          }
+        });
+
+      } catch (error) {
+        console.error('Gagal mengambil data:', error);
+      }
+    }
+
+    fetchData();
+  </script>
+</body>
+</html>

@@ -39,6 +39,9 @@
             <button class="report" onclick="window.location.href='/dashboard/laporan'">
                 <i class="fa-solid fa-sheet-plastic"></i> LAPORAN
             </button>
+            <button class="aum-cat" onclick="window.location.href='/dashboard/kategori'">
+                <i class="fa-solid fa-sheet-plastic"></i> AUM
+            </button>
         </div>
         <a href="/logout" class="logout">Logout</a>
     </div>
@@ -71,6 +74,20 @@
                 <div class="text-group">
                     <h1 id="masalah-terberat">N/A</h1>
                     <p>Masalah Terberat</p>
+                </div>
+            </div>
+             <div class="domminant">
+                <i class="fa-solid fa-bar-chart"></i>
+                <div class="text-group">
+                    <h1 id="jumlah-kategori">N/A</h1>
+                    <p>Jumlah Kategori Terdaftar</p>
+                </div>
+            </div>
+             <div class="domminant">
+                <i class="fa-solid  fa-pie-chart"></i>
+                <div class="text-group">
+                    <h1 id="jumlah-sub-kategori">N/A</h1>
+                    <p>Jumlah Pilihan Terdaftar</p>
                 </div>
             </div>
         </div>
@@ -112,6 +129,8 @@
             document.getElementById("total-siswa").textContent = data.total_accounts;
             document.getElementById("total-mengisi").textContent = data.total_submissions;
             document.getElementById("total-belum-mengisi").textContent = data.total_accounts - data.total_submissions;
+             document.getElementById("jumlah-kategori").textContent =data.total_category;
+            document.getElementById("jumlah-sub-kategori").textContent = data.total_sub_category;
         })
         .catch(error => {
             console.error("Fetch error:", error);

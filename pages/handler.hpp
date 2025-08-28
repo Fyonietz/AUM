@@ -37,6 +37,7 @@ EXPORT int Save_User(struct mg_connection *connection,void *callback);
 //BK
 EXPORT int bk_hasil(struct mg_connection *connection, void *callback); 
 EXPORT int bk_user(struct mg_connection *connection, void *callback);
+EXPORT int bk_cat(struct mg_connection *connection, void *callback);
 EXPORT int hasil(struct mg_connection *connection, void *callback);
 EXPORT int akun(struct mg_connection *connection, void *callback);
 EXPORT int hasil_kelas(struct mg_connection *connection, void *callback);

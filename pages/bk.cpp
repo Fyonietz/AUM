@@ -37,6 +37,18 @@ EXPORT int bk_user(struct mg_connection *connection, void *callback){
     Server.SSR("public/bk/user.htpp",connection);
 };
 
+EXPORT int bk_cat(struct mg_connection *connection, void *callback){
+    if(!open_bk){
+        mg_printf(connection,
+            "HTTP/1.1 401 Unauthorized\r\n"
+            "Content-Type: text/html\r\n"
+            "Connection: close\r\n\r\n"
+            "<html><body><h1>Unauthorized</h1></body></html>");
+        return 401;
+    }
+    Server.SSR("public/bk/kategori.htpp",connection);
+};
+
 EXPORT int hasil(struct mg_connection *connection, void *callback){
     if(!open_bk){
         mg_printf(connection,

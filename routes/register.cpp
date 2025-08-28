@@ -19,6 +19,7 @@ extern "C" EXPORT void update(struct mg_context *context) {
     Route.add(context,"/dashboard/hasil",bk_hasil,0);
     Route.add(context,"/dashboard/siswa",bk_user,0);
     Route.add(context,"/dashboard/laporan",bk_laporan,0);
+    Route.add(context,"/dashboard/kategori",bk_cat,0);
     Route.add(context,"/auth",auth,0);
     Route.add(context,"/whoiam",me,0);
     Route.add(context,"/auth/siswa",auth_siswa,0);

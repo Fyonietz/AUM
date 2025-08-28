@@ -11,7 +11,8 @@
     
     --orange: #f97316;             /* Warm orange, vibrant but not harsh */
     --orange-dark: #b45309;        /* Darker orange for hover */
-    
+    --coral: #f43f5e;
+    --coral-dark: #be123c;
     --white: #ffffff;              /* Keep white */
     --text-color: #1f2937;         /* Dark slate-gray for better readability than pure black */
     
@@ -329,4 +330,11 @@ footer {
 }
 .report:hover {
     background-color: var(--orange-dark);
+}
+.aum-cat {
+    background-color: var(--coral) !important;
+    color: var(--white);
+}
+.aum-cat:hover {
+    background-color: var(--coral-dark) !important;
 }
