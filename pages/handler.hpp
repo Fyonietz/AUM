@@ -33,6 +33,7 @@ EXPORT int Save_Kategori(struct mg_connection *connection,void *callback);
 EXPORT int Read_Kategori(struct mg_connection *connection,void *callback);
 //CRUD USER
 EXPORT int Save_User(struct mg_connection *connection,void *callback);
+EXPORT int Del_User(struct mg_connection *connection, void *callback);
 
 //BK
 EXPORT int bk_hasil(struct mg_connection *connection, void *callback); 

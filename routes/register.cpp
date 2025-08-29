@@ -30,6 +30,7 @@ extern "C" EXPORT void update(struct mg_context *context) {
     Route.add(context,"/admin/user",admin_crud_user,0);
     Route.add(context,"/admin/kategori",admin_crud_kategori,0);
     Route.add(context,"/api/register/user",Save_User,0);
+    Route.add(context,"/api/delete/user",Del_User,0);
     Route.add(context,"/api/save",Save_Kategori,0);
     Route.add(context,"/api/read",Read_Kategori,0);
     Route.add(context,"/api/hasil",hasil,0);

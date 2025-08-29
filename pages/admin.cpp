@@ -331,3 +331,50 @@ EXPORT int Save_User(struct mg_connection *connection, void *callback) {
 
     return 200;
 }
+EXPORT int Del_User(struct mg_connection *connection, void *callback) {
+    char post_data[1024] = {0};
+    int post_data_length = mg_read(connection, post_data, sizeof(post_data) - 1);
+    post_data[post_data_length] = '\0'; 
+    std::string body(post_data);
+
+    json parsed;
+    try {
+        parsed = json::parse(body);
+    } catch (...) {
+        mg_printf(connection,
+            "HTTP/1.1 400 Bad Request\r\n"
+            "Content-Type: application/json\r\n"
+            "Connection: close\r\n\r\n"
+            "{\"success\": false, \"message\": \"Invalid JSON\"}");
+        return 400;
+    }
+
+    std::string name = parsed.value("nama", "");
+    std::string query = "DELETE FROM siswa WHERE nama='"+name+"';";
+    Db db;
+    if (!db.Open()) {
+        mg_printf(connection,
+            "HTTP/1.1 500 Internal Server Error\r\n"
+            "Content-Type: application/json\r\n"
+            "Connection: close\r\n\r\n"
+            "{\"success\": false, \"message\": \"Database error\"}");
+        return 500;
+    }
+    db.QueryWithResults(query);
+    db.Close();
+
+    // Create a response JSON
+    std::string response_body = R"({"success": true, "message": "User saved successfully"})";
+
+    mg_printf(connection,
+        "HTTP/1.1 200 OK\r\n"
+        "Content-Type: application/json\r\n"
+        "Content-Length: %zu\r\n"
+        "Connection: close\r\n\r\n"
+        "%s",
+        response_body.length(),
+        response_body.c_str()
+    );
+
+    return 200;
+}

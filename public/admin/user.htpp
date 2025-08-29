@@ -12,7 +12,7 @@
   </div>
   
   <div class="register-user">
-  <h1 id="toggleRegister">Register Akun</h1>
+  <h1 id="toggleRegister">Register User</h1>
 
   <div id="registerForm" class="register-form toggle-container hidden">
     <input type="text" name="nama" id="nama" placeholder="Nama">
@@ -36,6 +36,14 @@
     </div>
   </div>
 </div>
+  <div class="delete-user">
+  <h1 class="toggle-btn" data-target="deleteForm" data-bg="delete-user">Hapus User</h1>
+  <div id="deleteForm" class="toggle-container hidden">
+    <input type="text" id="searchName" placeholder="Cari berdasarkan nama" />
+    <p id="deleteMessage"></p>
+    <button id="deleteUserBtn" onclick="deleteUser()">Hapus Akun</button>
+  </div>
+</div>
 
   <div class="daftar-user">
     <h1 id="toggleDaftar">Daftar User</h1>
@@ -43,6 +51,7 @@
       <iframe src="/dashboard/siswa" frameborder="0"></iframe>
     </div>
   </div>
+  
     <script src="/admin/script-admin.js"></script>
 </body>
 </html>

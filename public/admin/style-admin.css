@@ -1,175 +1,274 @@
 :root {
-      --primary: #b57edc;
-      --primary-dark: #734487;
-      --dark: #2c3e50;
-      --light-gray: #f4f6f9;
-      --border: #ddd;
-    }
+  --primary: #b57edc;
+  --primary-dark: #734487;
+  --dark: #2c3e50;
+  --light-gray: #f4f6f9;
+  --border: #ddd;
+}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Segoe UI", sans-serif;
-    }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
 
-    body {
-      background-color: var(--light-gray);
-      color: var(--dark);
-      line-height: 1.6;
-    }
+body {
+  background-color: var(--light-gray);
+  color: var(--dark);
+  line-height: 1.6;
+}
 
-    .nav {
-      display: flex;
-      background-color: #fff;
-      width: 90%;
-      max-width: 1100px;
-      min-height: 60px;
-      justify-content: center;
-      align-items: center;
-      margin: 20px auto;
-      border-radius: 10px;
-      gap: 20px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-      padding: 10px;
-    }
+/* Navigation Bar */
+.nav {
+  display: flex;
+  background-color: #fff;
+  width: 90%;
+  max-width: 1100px;
+  min-height: 60px;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 20px auto;
+  border-radius: 10px;
+  gap: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  padding: 10px;
+}
 
-    .nav a {
-      text-decoration: none;
-      font-weight: 600;
-      color: var(--dark);
-      padding: 6px 14px;
-      border-radius: 6px;
-      transition: 0.3s;
-    }
+.nav a {
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--dark);
+  padding: 6px 14px;
+  border-radius: 6px;
+  transition: 0.3s;
+}
 
-    .nav a:hover {
-      background-color: var(--primary);
-      color: #fff;
-    }
+.nav a:hover {
+  background-color: var(--primary);
+  color: #fff;
+}
 
-    .register-user,
-    .daftar-user {
-      margin: 30px auto;
-      width: 74%;
-      max-width: 1100px;
-      background: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    }
+/* Register and Daftar User Sections */
+.register-user,
+.daftar-user {
+  margin: 30px auto;
+  width: 74%;
+  max-width: 1100px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
 
-    .register-user h1,
-    .daftar-user h1 {
-      text-align: center;
-      margin-bottom: 16px;
-      font-size: 22px;
-      color: var(--dark);
-      cursor: pointer;
-    }
+.register-user h1,
+.daftar-user h1 {
+  text-align: center;
+  margin-bottom: 16px;
+  font-size: 22px;
+  color: var(--dark);
+  cursor: pointer;
+}
 
-    .register-form {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
 
-    .register-form input,
-    .register-form select {
-      padding: 12px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      font-size: 15px;
-    }
+.register-form input,
+.register-form select {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-size: 15px;
+}
 
-    .register-form input:focus,
-    .register-form select:focus {
-      border-color: var(--primary-dark);
-      box-shadow: 0 0 0 2px rgba(181, 126, 220, 0.2);
-    }
+.register-form input:focus,
+.register-form select:focus {
+  border-color: var(--primary-dark);
+  box-shadow: 0 0 0 2px rgba(181, 126, 220, 0.2);
+}
 
-    .btn-place {
-      display: flex;
-      gap: 10px;
-      margin-top: 14px;
-    }
+.btn-place {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
 
-    .btn-place button {
-      flex: 1;
-      height: 42px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 15px;
-      transition: 0.3s;
-      background-color: #e0e0e0;
-      color: var(--dark);
-      min-height: 45px;
-    }
+.btn-place button {
+  flex: 1;
+  height: 42px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  transition: 0.3s;
+  background-color: #e0e0e0;
+  color: var(--dark);
+  min-height: 45px;
+}
 
-    #save_user {
-      background-color: #b57edc;
-      color: white;
-    }
+#save_user {
+  background-color: #b57edc;
+  color: white;
+}
 
-    #save_user:hover {
-      background-color: var(--primary-dark);
-    }
+#save_user:hover {
+  background-color: var(--primary-dark);
+}
 
-    .btn-place button[type="reset"]:hover {
-      background-color: #ccc;
-    }
+#save_user:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
 
-    iframe {
-      width: 100%;
-      height: 800px;
-      border: none;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.06);
-    }
+.btn-place button[type="reset"]:hover {
+  background-color: #ccc;
+}
 
-    /* Animation for toggle */
-    .toggle-container {
-      overflow: hidden;
-      max-height: 0;
-      opacity: 0;
-      transition: max-height 0.4s ease, opacity 0.4s ease;
-    }
+iframe {
+  width: 100%;
+  height: 800px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.06);
+}
 
-    .toggle-container.active {
-      max-height: 1000px;
-      opacity: 1;
-    }
+/* Animation for toggle */
+.toggle-container {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+}
 
-    .bg-toggled {
-      background-color: #f9f1fc;
-      transition: background-color 0.3s ease;
-    }
+.toggle-container.active {
+  max-height: 1000px;
+  opacity: 1;
+}
 
-    @media screen and (max-width: 768px) {
-      .nav {
-        flex-direction: column;
-        gap: 10px;
-      }
+.bg-toggled {
+  background-color: #f9f1fc;
+  transition: background-color 0.3s ease;
+}
 
-      .btn-place {
-        flex-direction: column;
-      }
+/* Media Queries */
+@media screen and (max-width: 768px) {
+  .nav {
+    flex-direction: column;
+    gap: 10px;
+  }
 
-      .btn-place button {
-        width: 100%;
-      }
+  .btn-place {
+    flex-direction: column;
+  }
 
-      td, th {
-        font-size: 14px;
-        padding: 10px;
-      }
+  .btn-place button {
+    width: 100%;
+  }
 
-      .register-user,
-      .daftar-user {
-        width: 90% !important;
-      }
-    }
+  td, th {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .register-user,
+  .daftar-user {
+    width: 90% !important;
+  }
+}
+
+/* Delete User Section */
+.delete-user {
+  margin: 30px auto;
+  width: 74%;
+  max-width: 1100px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.delete-user h1 {
+  text-align: center;
+  margin-bottom: 16px;
+  font-size: 22px;
+  color: var(--dark);
+}
+
+.delete-user input {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-size: 15px;
+  width: 100%;
+}
+
+.delete-user input:focus {
+  border-color: var(--primary-dark);
+  box-shadow: 0 0 0 2px rgba(181, 126, 220, 0.2);
+}
+
+.delete-user button {
+  margin-top: 10px;
+  padding: 12px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  width: 100%;
+  transition: 0.3s;
+}
+
+.delete-user button:hover {
+  background-color: var(--primary-dark);
+}
+
+/* Feedback Styles */
+#deleteMessage {
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.loading {
+  color: var(--primary-dark);
+  font-style: italic;
+}
+
+.success {
+  color: green;
+}
+
+.error {
+  color: red;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  margin: 0 auto;
+  display: block;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid var(--primary);
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+/* Change cursor to pointer for the toggle button */
+.toggle-btn {
+  cursor: pointer;
+}

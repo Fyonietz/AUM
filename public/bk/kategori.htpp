@@ -2,6 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Data Berdasarkan Kategori</title>
   <style>
     :root {
@@ -107,6 +108,9 @@
 }
 
     @media (max-width: 600px) {
+      .nav{
+        flex-wrap: wrap;
+      }
       .register-user {
         flex-direction: column;
         align-items: center;
