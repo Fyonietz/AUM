@@ -74,7 +74,7 @@
     <a href="/admin">Kembali</a>
   </div>
 
-  <div class="register-kategori">
+  <div class="register-kategori register-user">
     <h1 id="toggleRegisterKategori" style="cursor:pointer;">Tambah Kategori / Sub Kategori</h1>
 
     <div id="registerKategoriForm" class="register-form toggle-container hidden">
@@ -100,21 +100,21 @@
     </div>
   </div>
 
-  <div class="list-kategori">
+  <div class="list-kategori register-user register-form">
     <h1>Daftar Kategori</h1>
     <select id="kategoriDropdown">
       <option value="">-- Pilih Kategori --</option>
     </select>
   </div>
 
-  <div class="list-subkategori">
+  <div class="list-subkategori register-user register-form">
     <h1>Daftar Subkategori</h1>
     <select id="subkategoriDropdown" disabled>
       <option value="">-- Pilih Subkategori --</option>
     </select>
   </div>
 
-  <div class="delete-kategori">
+  <div class="delete-kategori register-user">
     <h1 id="toggleDeleteKategori" class="toggle-btn" data-target="deleteKategoriForm" data-bg="delete-kategori" style="cursor:pointer;">Hapus Kategori / Subkategori</h1>
     <div id="deleteKategoriForm" class="toggle-container hidden">
       <select id="kategoriDeleteDropdown">

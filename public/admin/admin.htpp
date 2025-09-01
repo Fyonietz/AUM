@@ -22,9 +22,6 @@
             <button class="result-aum" onclick="window.location.href='/admin/kategori'">
                 <i class="fa-solid fa-chart-simple"></i>KELOLA KATEGORI
             </button>
-            <button class="report" onclick="window.location.href='/dashboard/laporan'">
-                <i class="fa-solid fa-sheet-plastic"></i> LAPORAN
-            </button>
         </div>
         <a href="/logout" class="logout">Logout</a>
     </div>

@@ -181,7 +181,13 @@ iframe {
     width: 90% !important;
   }
 }
-
+  .register-form,#deleteKategoriForm{
+    display:flex;
+    margin:0 auto;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column
+  }
 /* Delete User Section */
 .delete-user {
   margin: 30px auto;
