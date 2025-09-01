@@ -1,16 +1,456 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD Kategori</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CRUD Kategori</title>
+  <link rel="stylesheet" href="/admin/style-admin.css" />
+  <style>
+    /* Tambahan style kecil agar dropdown rapi */
+    select, input {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+      width: 100%;
+      max-width: 400px;
+      margin-bottom: 15px;
+    }
+    .btn-place {
+      display: flex;
+      gap: 10px;
+      max-width: 400px;
+      margin-bottom: 30px;
+    }
+    button {
+      flex: 1;
+      padding: 12px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      border: none;
+      background-color: var(--primary, #b57edc);
+      color: white;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: var(--primary-dark, #734487);
+    }
+    .loading {
+      color: var(--primary-dark, #734487);
+      font-style: italic;
+      margin-bottom: 15px;
+    }
+    .success {
+      color: green;
+      margin-bottom: 15px;
+    }
+    .error {
+      color: red;
+      margin-bottom: 15px;
+    }
+    .hidden {
+      display: none;
+    }
+    .bg-toggled {
+      background-color: #f0eaff;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    .code-input {
+      text-transform: uppercase;
+      max-width: 80px !important;
+      display: inline-block;
+      margin-right: 10px;
+    }
+    .name-input {
+      max-width: 300px !important;
+      display: inline-block;
+    }
+  </style>
 </head>
 <body>
-    <div class="Kategori">
-        <h1>Kategori</h1>
-        <input type="text" name="Kategori-AUM" id="Kategori" placeholder="Kategori">
-        <input type="number" name="Id-Kategori-AUM" id="Id-Kategori" placeholder="Id-Sub Kategori">
-        <button onclick="Save_Kategori()">Submit</button>
+  <div class="nav">
+    <a href="/admin">Kembali</a>
+  </div>
+
+  <div class="register-kategori">
+    <h1 id="toggleRegisterKategori" style="cursor:pointer;">Tambah Kategori / Sub Kategori</h1>
+
+    <div id="registerKategoriForm" class="register-form toggle-container hidden">
+      <!-- Input untuk kategori baru dengan kode -->
+      <div>
+        <input type="text" id="inputKategoriCode" class="code-input" placeholder="ABC" maxlength="3" />
+        <input type="text" id="inputKategori" class="name-input" placeholder="Nama Kategori" />
+        <small style="display: block; color: #666; margin-bottom: 10px;">Masukkan kode 3 digit (misal: JDK) dan nama kategori</small>
+      </div>
+
+      <!-- Dropdown untuk pilih kategori saat tambah subkategori -->
+      <select id="kategoriForSubkategori">
+        <option value="">-- Pilih Kategori untuk Subkategori --</option>
+      </select>
+
+      <!-- Input untuk subkategori baru -->
+      <input type="text" id="inputSubkategori" placeholder="Nama Subkategori (opsional)" />
+
+      <div class="btn-place">
+        <button onclick="saveKategoriAtauSub()">Save</button>
+        <button id="cancel_kategori">Cancel</button>
+      </div>
     </div>
+  </div>
+
+  <div class="list-kategori">
+    <h1>Daftar Kategori</h1>
+    <select id="kategoriDropdown">
+      <option value="">-- Pilih Kategori --</option>
+    </select>
+  </div>
+
+  <div class="list-subkategori">
+    <h1>Daftar Subkategori</h1>
+    <select id="subkategoriDropdown" disabled>
+      <option value="">-- Pilih Subkategori --</option>
+    </select>
+  </div>
+
+  <div class="delete-kategori">
+    <h1 id="toggleDeleteKategori" class="toggle-btn" data-target="deleteKategoriForm" data-bg="delete-kategori" style="cursor:pointer;">Hapus Kategori / Subkategori</h1>
+    <div id="deleteKategoriForm" class="toggle-container hidden">
+      <select id="kategoriDeleteDropdown">
+        <option value="">-- Pilih Kategori untuk Hapus --</option>
+      </select>
+      <select id="subkategoriDeleteDropdown" disabled>
+        <option value="">-- Pilih Subkategori untuk Hapus --</option>
+      </select>
+
+      <p id="deleteKategoriMessage"></p>
+
+      <div class="btn-place">
+        <button onclick="deleteKategori()">Hapus Kategori</button>
+        <button onclick="deleteSubkategori()">Hapus Subkategori</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // DOM Event Listeners
+    document.addEventListener("DOMContentLoaded", () => {
+      const toggleRegister = document.getElementById("toggleRegisterKategori");
+      const registerForm = document.getElementById("registerKategoriForm");
+      const registerContainer = document.querySelector(".register-kategori");
+      const cancelBtn = document.getElementById("cancel_kategori");
+      const codeInput = document.getElementById("inputKategoriCode");
+
+      // Auto uppercase for code input
+      codeInput.addEventListener("input", function() {
+        this.value = this.value.toUpperCase();
+      });
+
+      toggleRegister.addEventListener("click", () => {
+        registerForm.classList.toggle("active");
+        registerForm.classList.toggle("hidden");
+        registerContainer.classList.toggle("bg-toggled");
+        loadKategoriDropdown('kategoriForSubkategori');
+      });
+
+      cancelBtn.addEventListener("click", () => {
+        registerForm.classList.add("hidden");
+        registerForm.classList.remove("active");
+        registerContainer.classList.remove("bg-toggled");
+        clearInputs();
+      });
+
+      // Toggle delete form
+      document.querySelectorAll(".toggle-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const targetId = btn.getAttribute("data-target");
+          const bgClass = btn.getAttribute("data-bg");
+          const targetEl = document.getElementById(targetId);
+          const bgContainer = bgClass ? document.querySelector(`.${bgClass}`) : null;
+
+          targetEl.classList.toggle("active");
+          targetEl.classList.toggle("hidden");
+          if (bgContainer) {
+            bgContainer.classList.toggle("bg-toggled");
+          }
+          // Load kategori for delete dropdown and clear message
+          if (targetEl.classList.contains("active")) {
+            loadKategoriDropdown("kategoriDeleteDropdown");
+            document.getElementById('subkategoriDeleteDropdown').innerHTML = '<option value="">-- Pilih Subkategori untuk Hapus --</option>';
+            document.getElementById('subkategoriDeleteDropdown').disabled = true;
+            document.getElementById("deleteKategoriMessage").textContent = '';
+          }
+        });
+      });
+
+      // Load kategori dropdown on page load
+      loadKategoriDropdown("kategoriDropdown");
+      loadKategoriDropdown("kategoriForSubkategori");
+
+      // Load subkategori saat kategori dipilih di list utama
+      document.getElementById('kategoriDropdown').addEventListener('change', () => {
+        const kategoriCode = document.getElementById('kategoriDropdown').value;
+        loadSubkategoriDropdown(kategoriCode, 'subkategoriDropdown');
+      });
+
+      // Load subkategori saat kategori dipilih di delete form
+      document.getElementById('kategoriDeleteDropdown').addEventListener('change', () => {
+        const kategoriCode = document.getElementById('kategoriDeleteDropdown').value;
+        loadSubkategoriDropdown(kategoriCode, 'subkategoriDeleteDropdown');
+      });
+    });
+
+    // Utility Functions
+    function clearInputs() {
+      document.getElementById("inputKategoriCode").value = "";
+      document.getElementById("inputKategori").value = "";
+      document.getElementById("kategoriForSubkategori").value = "";
+      document.getElementById("inputSubkategori").value = "";
+    }
+
+    // Load Kategori Dropdown
+    async function loadKategoriDropdown(dropdownId) {
+      const dropdown = document.getElementById(dropdownId);
+      if (!dropdown) return;
+
+      dropdown.innerHTML = '<option value="">-- Pilih Kategori --</option>';
+
+      try {
+        const response = await fetch("/api/read/total_kategori");
+        if (!response.ok) throw new Error("Failed to fetch kategori");
+
+        const kategoris = await response.json();
+
+        kategoris.forEach(k => {
+          const opt = document.createElement("option");
+          // Use code as value instead of ID
+          opt.value = k.code || k.nama_bidang_masalah.substring(0, 3);
+          // Display format: "JDK - Category Name"
+          opt.textContent = k.nama_bidang_masalah || "Kategori";
+          dropdown.appendChild(opt);
+        });
+      } catch (err) {
+        console.error(err);
+        const errorOpt = document.createElement("option");
+        errorOpt.textContent = "Gagal memuat kategori";
+        errorOpt.disabled = true;
+        dropdown.appendChild(errorOpt);
+      }
+    }
+
+    // Load Subkategori Dropdown
+    async function loadSubkategoriDropdown(kategoriCode, dropdownId) {
+      const dropdown = document.getElementById(dropdownId);
+      if (!dropdown) return;
+
+      dropdown.innerHTML = '<option value="">-- Pilih Subkategori --</option>';
+      dropdown.disabled = true;
+
+      if (!kategoriCode) {
+        dropdown.disabled = true;
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/read-subkategori?kategoriCode=${encodeURIComponent(kategoriCode)}`);
+        if (!response.ok) throw new Error("Failed to fetch subkategori");
+
+        const subkategories = await response.json();
+
+        if (subkategories.length === 0) {
+          const opt = document.createElement("option");
+          opt.value = "";
+          opt.textContent = "Tidak ada subkategori";
+          opt.disabled = true;
+          dropdown.appendChild(opt);
+        } else {
+          subkategories.forEach(sub => {
+            const option = document.createElement("option");
+            // Use nama_soal_masalah as both value and display
+            option.value = sub.nama_soal_masalah;
+            option.textContent = sub.nama_soal_masalah || "Subkategori";
+            dropdown.appendChild(option);
+          });
+        }
+        dropdown.disabled = false;
+      } catch (err) {
+        console.error(err);
+        const errorOpt = document.createElement("option");
+        errorOpt.textContent = "Gagal memuat subkategori";
+        errorOpt.disabled = true;
+        dropdown.appendChild(errorOpt);
+        dropdown.disabled = true;
+      }
+    }
+
+    // Save Kategori atau Subkategori
+    async function saveKategoriAtauSub() {
+      const kategoriCodeVal = document.getElementById("inputKategoriCode").value.trim().toUpperCase();
+      const kategoriVal = document.getElementById("inputKategori").value.trim();
+      const selectedKategoriForSub = document.getElementById("kategoriForSubkategori").value;
+      const subkategoriVal = document.getElementById("inputSubkategori").value.trim();
+
+      if (!kategoriCodeVal && !kategoriVal && !subkategoriVal) {
+        alert("Mohon isi Kode & Nama Kategori atau Subkategori");
+        return;
+      }
+
+      if (kategoriCodeVal && kategoriVal && !selectedKategoriForSub) {
+        // Validate code is exactly 3 characters
+        if (kategoriCodeVal.length !== 3) {
+          alert("Kode kategori harus tepat 3 karakter!");
+          return;
+        }
+
+        // Save new kategori
+        try {
+          const response = await fetch("/api/save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+              code: kategoriCodeVal,
+              kategori: kategoriVal 
+            })
+          });
+          
+          const result = await response.json();
+          
+          if (response.ok && result.success) {
+            alert("Kategori berhasil disimpan dengan kode: " + kategoriCodeVal);
+            clearInputs();
+            loadKategoriDropdown("kategoriDropdown");
+            loadKategoriDropdown("kategoriDeleteDropdown");
+            loadKategoriDropdown("kategoriForSubkategori");
+          } else {
+            alert("Gagal menyimpan kategori: " + (result.message || "Unknown error"));
+          }
+        } catch (err) {
+          console.error(err);
+          alert("Gagal menyimpan kategori: " + err.message);
+        }
+      } else if (selectedKategoriForSub && subkategoriVal) {
+        // Save subkategori ke kategori yang dipilih
+        try {
+          const response = await fetch("/api/save-subkategori", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+              kategori_code: selectedKategoriForSub, 
+              subkategori: subkategoriVal 
+            })
+          });
+          
+          const result = await response.json();
+          
+          if (response.ok && result.success) {
+            alert("Subkategori berhasil disimpan!");
+            clearInputs();
+            loadSubkategoriDropdown(selectedKategoriForSub, "subkategoriDropdown");
+            loadSubkategoriDropdown(selectedKategoriForSub, "subkategoriDeleteDropdown");
+          } else {
+            alert("Gagal menyimpan subkategori: " + (result.message || "Unknown error"));
+          }
+        } catch (err) {
+          console.error(err);
+          alert("Gagal menyimpan subkategori: " + err.message);
+        }
+      } else {
+        alert("Untuk menambah kategori: isi kode (3 digit) dan nama kategori.\nUntuk menambah subkategori: pilih kategori dan isi nama subkategori.");
+      }
+    }
+
+    // Delete Kategori
+    async function deleteKategori() {
+      const selectedCode = document.getElementById("kategoriDeleteDropdown").value;
+      const messageElement = document.getElementById("deleteKategoriMessage");
+
+      if (!selectedCode) {
+        messageElement.textContent = "Pilih kategori yang akan dihapus.";
+        messageElement.className = "error";
+        return;
+      }
+
+      if (!confirm("Yakin ingin menghapus kategori ini? Semua subkategori terkait juga akan dihapus.")) {
+        return;
+      }
+
+      messageElement.textContent = "Menghapus kategori...";
+      messageElement.className = "loading";
+
+      try {
+        const response = await fetch("/admin/kategori/delete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ kategori_code: selectedCode })
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          messageElement.textContent = "Kategori berhasil dihapus.";
+          messageElement.className = "success";
+
+          loadKategoriDropdown("kategoriDropdown");
+          loadKategoriDropdown("kategoriDeleteDropdown");
+          loadKategoriDropdown("kategoriForSubkategori");
+          document.getElementById('subkategoriDeleteDropdown').innerHTML = '<option value="">-- Pilih Subkategori untuk Hapus --</option>';
+          document.getElementById('subkategoriDeleteDropdown').disabled = true;
+        } else {
+          messageElement.textContent = "Gagal menghapus kategori: " + (result.message || "Unknown error");
+          messageElement.className = "error";
+        }
+      } catch (err) {
+        console.error(err);
+        messageElement.textContent = "Terjadi kesalahan saat menghapus kategori: " + err.message;
+        messageElement.className = "error";
+      }
+    }
+
+    // Delete Subkategori
+    async function deleteSubkategori() {
+      const kategoriCode = document.getElementById("kategoriDeleteDropdown").value;
+      const subkategoriName = document.getElementById("subkategoriDeleteDropdown").value;
+      const messageElement = document.getElementById("deleteKategoriMessage");
+
+      if (!kategoriCode || !subkategoriName) {
+        messageElement.textContent = "Pilih kategori dan subkategori yang akan dihapus.";
+        messageElement.className = "error";
+        return;
+      }
+
+      if (!confirm("Yakin ingin menghapus subkategori ini?")) {
+        return;
+      }
+
+      messageElement.textContent = "Menghapus subkategori...";
+      messageElement.className = "loading";
+
+      try {
+        const response = await fetch("/admin/subkategori/delete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ subkategori_name: subkategoriName })
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          messageElement.textContent = "Subkategori berhasil dihapus.";
+          messageElement.className = "success";
+
+          loadSubkategoriDropdown(kategoriCode, "subkategoriDropdown");
+          loadSubkategoriDropdown(kategoriCode, "subkategoriDeleteDropdown");
+        } else {
+          messageElement.textContent = "Gagal menghapus subkategori: " + (result.message || "Unknown error");
+          messageElement.className = "error";
+        }
+      } catch (err) {
+        console.error(err);
+        messageElement.textContent = "Terjadi kesalahan saat menghapus subkategori: " + err.message;
+        messageElement.className = "error";
+      }
+    }
+  </script>
 </body>
 </html>
